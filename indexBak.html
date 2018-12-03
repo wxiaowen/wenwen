@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>chat</title>
+    <script src="http://cdn.bootcss.com/stomp.js/2.3.3/stomp.min.js"></script>
+    <script src="https://cdn.bootcss.com/sockjs-client/1.1.4/sockjs.min.js"></script>
+    <script src="http://cdn.bootcss.com/jquery/2.0.3/jquery.min.js"></script>
+    <style type="text/css">
+        .arrow {
+            width:0;
+            height:0;
+            font-size:0;
+            border:solid 10px;
+            border-color:#f00 #0f0 #00f #000;
+        }
+    </style>
+</head>
+<body>
+Welcome<br/><input id="text" type="text"/>
+<button onclick="send()" id="send-btn">发送消息</button>
+<hr/>
+<button onclick="closeWebSocket()">断开</button>
+<hr/>
+<div id="message"></div>
+</body>
+<script src="https://pv.sohu.com/cityjson?ie=utf-8"></script>
+<script type="text/javascript">
+    var ip = returnCitySN["cip"];
+    var obj = {
+        "fromUserId": '',
+        "toUserId": '',
+        "content": '',
+        "time": ''
+    };
+    var websocket = null;
+    //判断当前浏览器是否支持WebSocket
+    if ('WebSocket' in window) {
+        websocket = new WebSocket("ws://192.168.1.179:8002/websocket/socketServer?fromIp=" + ip);
+    }
+    else {
+        alert('当前浏览器 Not support websocket')
+    }
+
+    //连接发生错误的回调方法
+    websocket.onerror = function () {
+        setMessageInnerHTML("连接发生错误");
+    };
+
+    //连接成功建立的回调方法
+    websocket.onopen = function () {
+        obj.fromUserId=ip;
+        obj.content="连接成功";
+        obj.time= formatDate(new Date(), "yyyy-MM-dd hh:mm:ss");
+        setMessageInnerHTML(obj);
+    }
+
+    //接收到消息的回调方法
+    websocket.onmessage = function (event) {
+        console.log(JSON.parse(event.data))
+        setMessageInnerHTML(JSON.parse(event.data));
+    }
+
+    //连接关闭的回调方法
+    websocket.onclose = function () {
+        setMessageInnerHTML("WebSocket连接关闭");
+    }
+
+    //监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
+    window.onbeforeunload = function () {
+        closeWebSocket();
+    }
+
+    //将消息显示在网页上
+    function setMessageInnerHTML(content) {
+        document.getElementById('message').innerHTML += JSON.stringify(content.fromUserId)+":"+ JSON.stringify(content.content)+ '<br/>';
+    }
+
+    //关闭WebSocket连接
+    function closeWebSocket() {
+        websocket.close();
+    }
+
+    //打开连接
+    function openWebSocket() {
+        websocket = new WebSocket("ws://192.168.1.179:8002/websocket/socketServer");
+        //连接成功建立的回调方法
+        websocket.onopen = function () {
+            setMessageInnerHTML("WebSocket连接成功");
+        }
+    }
+
+    //发送消息
+    function send() {
+        var message = document.getElementById('text').value;
+        if(!message){
+            alert("你不想说点啥")
+            return
+        }
+        obj.content = message;
+        obj.fromUserId = ip;
+        obj.time = formatDate(new Date(), "yyyy-MM-dd hh:mm:ss");
+        websocket.send(JSON.stringify(obj));
+        document.getElementById('text').value='';
+    }
+
+    //格式化日期,
+    function formatDate(date, format) {
+        var paddNum = function (num) {
+            num += "";
+            return num.replace(/^(\d)$/, "0$1");
+        }
+        //指定格式字符
+        var cfg = {
+            yyyy: date.getFullYear() //年 : 4位
+            , yy: date.getFullYear().toString().substring(2)//年 : 2位
+            , M: date.getMonth() + 1  //月 : 如果1位的时候不补0
+            , MM: paddNum(date.getMonth() + 1) //月 : 如果1位的时候补0
+            , d: date.getDate()   //日 : 如果1位的时候不补0
+            , dd: paddNum(date.getDate())//日 : 如果1位的时候补0
+            , hh: paddNum(date.getHours())  //时
+            , mm: paddNum(date.getMinutes()) //分
+            , ss: paddNum(date.getSeconds()) //秒
+        }
+        format || (format = "yyyy-MM-dd hh:mm:ss");
+        return format.replace(/([a-z])(\1)*/ig, function (m) {
+            return cfg[m];
+        });
+    }
+
+    $(function () {
+        //回车登录
+        $("body").bind('keyup', function (event) {
+            if (event.keyCode == 13) {
+                $("#send-btn").trigger("click");
+            }
+        });
+
+
+    })
+</script>
+</html>
