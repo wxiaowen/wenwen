@@ -2130,7 +2130,7 @@
     var websocket = null;
     //判断当前浏览器是否支持WebSocket
     if ('WebSocket' in window) {
-        websocket = new WebSocket("ws://wxw.ngrok.xiaomiqiu.cn/websocket/socketServer?fromIp=" + ip);
+        websocket = new WebSocket("wss://wxw.ngrok.xiaomiqiu.cn/websocket/socketServer?fromIp=" + ip);
     }
     else {
         alert('当前浏览器 Not support websocket')
@@ -2204,14 +2204,14 @@ console.log( $(".dialogs"))
         websocket.close();
     }
 
-    //打开连接
-    function openWebSocket() {
-        websocket = new WebSocket("wss://192.168.1.179:8002/websocket/socketServer");
-        //连接成功建立的回调方法
-        websocket.onopen = function () {
-            setMessageInnerHTML("WebSocket连接成功");
-        }
-    }
+    // //打开连接
+    // function openWebSocket() {
+    //     websocket = new WebSocket("wss://192.168.1.179:8002/websocket/socketServer");
+    //     //连接成功建立的回调方法
+    //     websocket.onopen = function () {
+    //         setMessageInnerHTML("WebSocket连接成功");
+    //     }
+    // }
 
     //发送消息
     function send() {
