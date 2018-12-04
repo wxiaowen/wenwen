@@ -2206,7 +2206,7 @@ console.log( $(".dialogs"))
 
     //打开连接
     function openWebSocket() {
-        websocket = new WebSocket("ws://192.168.1.179:8002/websocket/socketServer");
+        websocket = new WebSocket("wss://192.168.1.179:8002/websocket/socketServer");
         //连接成功建立的回调方法
         websocket.onopen = function () {
             setMessageInnerHTML("WebSocket连接成功");
