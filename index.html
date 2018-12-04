@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
     <meta charset="utf-8"/>
-    <title>Dashboard - Ace Admin</title>
+    <title>wen</title>
 
     <meta name="description" content="overview &amp; stats"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
@@ -2018,7 +2018,7 @@
                                             <form>
                                                 <div class="form-actions">
                                                     <div class="input-group">
-                                                        <input placeholder="Type your message here ..." type="text"
+                                                        <input type="text"
                                                                id="text" class="form-control" name="message"/>
                                                         <span class="input-group-btn">
 																	<button class="btn btn-sm btn-info no-radius chat-send"
@@ -2133,7 +2133,7 @@
     var websocket = null;
     //判断当前浏览器是否支持WebSocket
     if ('WebSocket' in window) {
-        websocket = new WebSocket("ws://192.168.1.179:8002/websocket/socketServer?fromIp=" + ip);
+        websocket = new WebSocket("ws://wxw.ngrok.xiaomiqiu.cn/websocket/socketServer?fromIp=" + ip);
     }
     else {
         alert('当前浏览器 Not support websocket')
@@ -2194,6 +2194,12 @@ var html=" <div class=\"itemdiv dialogdiv\">\n" +
 
 
         $(".dialogs").append(html);
+
+console.log( $(".dialogs"))
+        $(".dialogs").scrollTop=$(".dialogs").scrollHeight;
+
+
+
     }
 
     //关闭WebSocket连接
