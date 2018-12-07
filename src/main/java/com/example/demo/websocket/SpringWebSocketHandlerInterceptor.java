@@ -20,13 +20,12 @@ public class SpringWebSocketHandlerInterceptor extends HttpSessionHandshakeInter
     @Override
     public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler,
                                    Map<String, Object> attributes) throws Exception {
-        // TODO Auto-generated method stub
         if (request instanceof ServletServerHttpRequest) {
             //获取登录用户，存入websocket中
             HttpServletRequest httpServletRequest = ((ServletServerHttpRequest) request).getServletRequest();
             String fromIp = httpServletRequest.getParameter("fromIp");
             attributes.put("FROM_USER_IP", fromIp);
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             attributes.put("LOGIN_TIME", sdf.format(new Date()));
         }
         return super.beforeHandshake(request, response, wsHandler, attributes);

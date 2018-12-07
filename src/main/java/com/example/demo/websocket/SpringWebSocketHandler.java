@@ -1,6 +1,7 @@
 package com.example.demo.websocket;
 
 import com.example.demo.model.OnlineUser;
+import com.google.gson.Gson;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.slf4j.Logger;
@@ -42,10 +43,12 @@ public class SpringWebSocketHandler extends TextWebSocketHandler {
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         String fromUserIp = session.getAttributes().get("FROM_USER_IP").toString();
-        List<OnlineUser> List = getAllOnlineUsers();
-        logger.info("在线{}", List);
+
         users.add(session);
         logger.info("{}连接到WebSocket成功......当前连接数量:" + users.size(), fromUserIp);
+        List<OnlineUser> List = getAllOnlineUsers();
+        Gson gson=new Gson();
+        logger.info("在线{}", gson.toJson(List));
 
     }
 
@@ -57,8 +60,8 @@ public class SpringWebSocketHandler extends TextWebSocketHandler {
 
         String fromUserIp = session.getAttributes().get("FROM_USER_IP").toString();
         logger.info("用户" + fromUserIp + "已退出！");
+        removeOnlineUser(fromUserIp);
         users.remove(session);
-        onlineUsers.remove(fromUserIp);
         logger.debug("{}连接已关闭......", fromUserIp);
         logger.info("剩余在线用户" + users.size());
     }

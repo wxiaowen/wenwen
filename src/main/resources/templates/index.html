@@ -3,11 +3,12 @@
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
     <meta charset="utf-8"/>
-    <title>wen</title>
-
-    <meta name="description" content="overview &amp; stats"/>
+    <title>web-chat</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="description" content="wen"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
-
+    <link rel="stylesheet" href="/assets/layui/dist/css/layui.css" media="all">
     <!-- bootstrap & fontawesome -->
     <link rel="stylesheet" href="/assets/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css"/>
@@ -48,9 +49,8 @@
 
 
     <style>
-        .dialogs {
-            overflow-y: auto;
-            height: 300px
+        #message::-webkit-scrollbar {
+            display: none;
         }
     </style>
 </head>
@@ -910,99 +910,99 @@
     <div class="main-content">
         <div class="main-content-inner">
             <!--<div class="breadcrumbs ace-save-state" id="breadcrumbs">-->
-                <!--<ul class="breadcrumb">-->
-                    <!--<li>-->
-                        <!--<i class="ace-icon fa fa-home home-icon"></i>-->
-                        <!--<a href="#">Home</a>-->
-                    <!--</li>-->
-                    <!--<li class="active">Dashboard</li>-->
-                <!--</ul>&lt;!&ndash; /.breadcrumb &ndash;&gt;-->
+            <!--<ul class="breadcrumb">-->
+            <!--<li>-->
+            <!--<i class="ace-icon fa fa-home home-icon"></i>-->
+            <!--<a href="#">Home</a>-->
+            <!--</li>-->
+            <!--<li class="active">Dashboard</li>-->
+            <!--</ul>&lt;!&ndash; /.breadcrumb &ndash;&gt;-->
 
-                <!--<div class="nav-search" id="nav-search">-->
-                    <!--<form class="form-search">-->
-								<!--<span class="input-icon">-->
-									<!--<input type="text" placeholder="Search ..." class="nav-search-input"-->
-                                           <!--id="nav-search-input" autocomplete="off"/>-->
-									<!--<i class="ace-icon fa fa-search nav-search-icon"></i>-->
-								<!--</span>-->
-                    <!--</form>-->
-                <!--</div>&lt;!&ndash; /.nav-search &ndash;&gt;-->
+            <!--<div class="nav-search" id="nav-search">-->
+            <!--<form class="form-search">-->
+            <!--<span class="input-icon">-->
+            <!--<input type="text" placeholder="Search ..." class="nav-search-input"-->
+            <!--id="nav-search-input" autocomplete="off"/>-->
+            <!--<i class="ace-icon fa fa-search nav-search-icon"></i>-->
+            <!--</span>-->
+            <!--</form>-->
+            <!--</div>&lt;!&ndash; /.nav-search &ndash;&gt;-->
             <!--</div>-->
 
             <div class="page-content">
                 <!--<div class="ace-settings-container" id="ace-settings-container">-->
-                    <!--<div class="btn btn-app btn-xs btn-warning ace-settings-btn" id="ace-settings-btn">-->
-                        <!--<i class="ace-icon fa fa-cog bigger-130"></i>-->
-                    <!--</div>-->
+                <!--<div class="btn btn-app btn-xs btn-warning ace-settings-btn" id="ace-settings-btn">-->
+                <!--<i class="ace-icon fa fa-cog bigger-130"></i>-->
+                <!--</div>-->
 
-                    <!--<div class="ace-settings-box clearfix" id="ace-settings-box">-->
-                        <!--<div class="pull-left width-50">-->
-                            <!--<div class="ace-settings-item">-->
-                                <!--<div class="pull-left">-->
-                                    <!--<select id="skin-colorpicker" class="hide">-->
-                                        <!--<option data-skin="no-skin" value="#438EB9">#438EB9</option>-->
-                                        <!--<option data-skin="skin-1" value="#222A2D">#222A2D</option>-->
-                                        <!--<option data-skin="skin-2" value="#C6487E">#C6487E</option>-->
-                                        <!--<option data-skin="skin-3" value="#D0D0D0">#D0D0D0</option>-->
-                                    <!--</select>-->
-                                <!--</div>-->
-                                <!--<span>&nbsp; Choose Skin</span>-->
-                            <!--</div>-->
+                <!--<div class="ace-settings-box clearfix" id="ace-settings-box">-->
+                <!--<div class="pull-left width-50">-->
+                <!--<div class="ace-settings-item">-->
+                <!--<div class="pull-left">-->
+                <!--<select id="skin-colorpicker" class="hide">-->
+                <!--<option data-skin="no-skin" value="#438EB9">#438EB9</option>-->
+                <!--<option data-skin="skin-1" value="#222A2D">#222A2D</option>-->
+                <!--<option data-skin="skin-2" value="#C6487E">#C6487E</option>-->
+                <!--<option data-skin="skin-3" value="#D0D0D0">#D0D0D0</option>-->
+                <!--</select>-->
+                <!--</div>-->
+                <!--<span>&nbsp; Choose Skin</span>-->
+                <!--</div>-->
 
-                            <!--<div class="ace-settings-item">-->
-                                <!--<input type="checkbox" class="ace ace-checkbox-2 ace-save-state"-->
-                                       <!--id="ace-settings-navbar" autocomplete="off"/>-->
-                                <!--<label class="lbl" for="ace-settings-navbar"> Fixed Navbar</label>-->
-                            <!--</div>-->
+                <!--<div class="ace-settings-item">-->
+                <!--<input type="checkbox" class="ace ace-checkbox-2 ace-save-state"-->
+                <!--id="ace-settings-navbar" autocomplete="off"/>-->
+                <!--<label class="lbl" for="ace-settings-navbar"> Fixed Navbar</label>-->
+                <!--</div>-->
 
-                            <!--<div class="ace-settings-item">-->
-                                <!--<input type="checkbox" class="ace ace-checkbox-2 ace-save-state"-->
-                                       <!--id="ace-settings-sidebar" autocomplete="off"/>-->
-                                <!--<label class="lbl" for="ace-settings-sidebar"> Fixed Sidebar</label>-->
-                            <!--</div>-->
+                <!--<div class="ace-settings-item">-->
+                <!--<input type="checkbox" class="ace ace-checkbox-2 ace-save-state"-->
+                <!--id="ace-settings-sidebar" autocomplete="off"/>-->
+                <!--<label class="lbl" for="ace-settings-sidebar"> Fixed Sidebar</label>-->
+                <!--</div>-->
 
-                            <!--<div class="ace-settings-item">-->
-                                <!--<input type="checkbox" class="ace ace-checkbox-2 ace-save-state"-->
-                                       <!--id="ace-settings-breadcrumbs" autocomplete="off"/>-->
-                                <!--<label class="lbl" for="ace-settings-breadcrumbs"> Fixed Breadcrumbs</label>-->
-                            <!--</div>-->
+                <!--<div class="ace-settings-item">-->
+                <!--<input type="checkbox" class="ace ace-checkbox-2 ace-save-state"-->
+                <!--id="ace-settings-breadcrumbs" autocomplete="off"/>-->
+                <!--<label class="lbl" for="ace-settings-breadcrumbs"> Fixed Breadcrumbs</label>-->
+                <!--</div>-->
 
-                            <!--<div class="ace-settings-item">-->
-                                <!--<input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-rtl"-->
-                                       <!--autocomplete="off"/>-->
-                                <!--<label class="lbl" for="ace-settings-rtl"> Right To Left (rtl)</label>-->
-                            <!--</div>-->
+                <!--<div class="ace-settings-item">-->
+                <!--<input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-rtl"-->
+                <!--autocomplete="off"/>-->
+                <!--<label class="lbl" for="ace-settings-rtl"> Right To Left (rtl)</label>-->
+                <!--</div>-->
 
-                            <!--<div class="ace-settings-item">-->
-                                <!--<input type="checkbox" class="ace ace-checkbox-2 ace-save-state"-->
-                                       <!--id="ace-settings-add-container" autocomplete="off"/>-->
-                                <!--<label class="lbl" for="ace-settings-add-container">-->
-                                    <!--Inside-->
-                                    <!--<b>.container</b>-->
-                                <!--</label>-->
-                            <!--</div>-->
-                        <!--</div>&lt;!&ndash; /.pull-left &ndash;&gt;-->
+                <!--<div class="ace-settings-item">-->
+                <!--<input type="checkbox" class="ace ace-checkbox-2 ace-save-state"-->
+                <!--id="ace-settings-add-container" autocomplete="off"/>-->
+                <!--<label class="lbl" for="ace-settings-add-container">-->
+                <!--Inside-->
+                <!--<b>.container</b>-->
+                <!--</label>-->
+                <!--</div>-->
+                <!--</div>&lt;!&ndash; /.pull-left &ndash;&gt;-->
 
-                        <!--<div class="pull-left width-50">-->
-                            <!--<div class="ace-settings-item">-->
-                                <!--<input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-hover"-->
-                                       <!--autocomplete="off"/>-->
-                                <!--<label class="lbl" for="ace-settings-hover"> Submenu on Hover</label>-->
-                            <!--</div>-->
+                <!--<div class="pull-left width-50">-->
+                <!--<div class="ace-settings-item">-->
+                <!--<input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-hover"-->
+                <!--autocomplete="off"/>-->
+                <!--<label class="lbl" for="ace-settings-hover"> Submenu on Hover</label>-->
+                <!--</div>-->
 
-                            <!--<div class="ace-settings-item">-->
-                                <!--<input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-compact"-->
-                                       <!--autocomplete="off"/>-->
-                                <!--<label class="lbl" for="ace-settings-compact"> Compact Sidebar</label>-->
-                            <!--</div>-->
+                <!--<div class="ace-settings-item">-->
+                <!--<input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-compact"-->
+                <!--autocomplete="off"/>-->
+                <!--<label class="lbl" for="ace-settings-compact"> Compact Sidebar</label>-->
+                <!--</div>-->
 
-                            <!--<div class="ace-settings-item">-->
-                                <!--<input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-highlight"-->
-                                       <!--autocomplete="off"/>-->
-                                <!--<label class="lbl" for="ace-settings-highlight"> Alt. Active Item</label>-->
-                            <!--</div>-->
-                        <!--</div>&lt;!&ndash; /.pull-left &ndash;&gt;-->
-                    <!--</div>&lt;!&ndash; /.ace-settings-box &ndash;&gt;-->
+                <!--<div class="ace-settings-item">-->
+                <!--<input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-highlight"-->
+                <!--autocomplete="off"/>-->
+                <!--<label class="lbl" for="ace-settings-highlight"> Alt. Active Item</label>-->
+                <!--</div>-->
+                <!--</div>&lt;!&ndash; /.pull-left &ndash;&gt;-->
+                <!--</div>&lt;!&ndash; /.ace-settings-box &ndash;&gt;-->
                 <!--</div>&lt;!&ndash; /.ace-settings-container &ndash;&gt;-->
 
                 <!--<div class="page-header">-->
@@ -1385,7 +1385,7 @@
 
                         <!--<div class="hr hr32 hr-dotted"></div>-->
 
-                        <div class="row">
+                        <div class="layui-row">
                             <!--<div class="col-sm-6">-->
                             <!--<div class="widget-box transparent" id="recent-box">-->
                             <!--<div class="widget-header">-->
@@ -1980,7 +1980,7 @@
                             <!--</div>&lt;!&ndash; /.widget-box &ndash;&gt;-->
                             <!--</div>&lt;!&ndash; /.col &ndash;&gt;-->
 
-                            <div class="col-sm-12">
+                            <div class="layui-col-sm12 ">
                                 <div class="widget-box">
                                     <div class="widget-header">
                                         <h4 class="widget-title lighter smaller">
@@ -1991,7 +1991,8 @@
 
                                     <div class="widget-body">
                                         <div class="widget-main no-padding">
-                                            <div class="dialogs">
+                                            <div class="dialogs" id="message"
+                                                 style="overflow:auto; height: 300px; border: 1px solid #999;">
                                                 <!--<div class="itemdiv dialogdiv">-->
                                                 <!--<div class="user">-->
                                                 <!--<img alt="Alexa's Avatar"-->
@@ -2015,24 +2016,35 @@
                                                 <!--</div>-->
                                             </div>
 
-                                            <form>
-                                                <div class="form-actions">
-                                                    <div class="input-group">
-                                                        <input type="text"
-                                                               id="text" class="form-control" name="message"/>
-                                                        <span class="input-group-btn">
-																	<button class="btn btn-sm btn-info no-radius chat-send"
-                                                                            type="button">
-																		<i class="ace-icon fa fa-share"></i>
-																		Send
-																	</button>
-                                                            <!--<button class="btn btn-sm btn-error no-radius chat-close"-->
-                                                            <!--type="button">-->
-                                                            <!--<i class="ace-icon fa fa-close"></i>-->
-                                                            <!--close-->
-                                                            <!--</button>-->
-                                                            <!--<button onclick="closeWebSocket()">断开</button>-->
+                                            <form id="send-form" class="layui-form" action="">
+                                                <div class="layui-form-item">
+                                                    <div class="layui-input-block">
+                                                        <!--<div class="">-->
+                                                        <input type="text" id="text" class="layui-input"><span
+                                                            class="input-group-btn">
+																	<!--<button class="btn btn-sm btn-info no-radius chat-send"-->
+                                                        <!--type="button" id="send">-->
+                                                        <!--<i class="ace-icon fa fa-share"></i>-->
+                                                        <!--Send-->
+                                                        <!--</button>-->
+                                                             <button class="layui-btn layui-btn-primary chat-send"
+                                                                     id="send" type="button" lay-submit
+                                                                     lay-filter="formDemo">
+                                                            <i class="layui-icon">&#xe654;</i>
+                                                           </button>
+                                                         <button class="chat-send layui-btn" id="send-btn"  style="display: none">发送</button>
+                                                        <!--<button class="btn btn-sm btn-error no-radius chat-close"-->
+                                                        <!--type="button">-->
+                                                        <!--<i class="ace-icon fa fa-close"></i>-->
+                                                        <!--close-->
+                                                        <!--</button>-->
+                                                        <!--<button onclick="closeWebSocket()">断开</button>-->
 																</span>
+
+                                                        <!--</div>-->
+                                                        <!--<input type="text"-->
+                                                        <!--id="text" class="layui-input"/>-->
+
                                                     </div>
                                                 </div>
                                             </form>
@@ -2128,7 +2140,7 @@
 
 <!-- inline scripts related to this page -->
 
-
+<script src="/assets/layui/dist/layui.js" charset="utf-8"></script>
 </body>
 <script src="https://pv.sohu.com/cityjson?ie=utf-8"></script>
 <script type="text/javascript">
@@ -2157,7 +2169,26 @@
     websocket.onerror = function () {
         setMessageInnerHTML("连接发生错误");
     };
+    layui.use('form', function () {
+        var form = layui.form;
 
+        //监听提交
+        form.on('submit(formDemo)', function (data) {
+            return false;
+        });
+        //自定义验证规则
+        form.verify({
+            message: function (value) {
+                if (!value) {
+                    layer.msg('你不想说点啥', function () {
+                        $("#text").focus();
+
+                    });
+                    return false;
+                }
+            }
+        });
+    });
     //连接成功建立的回调方法
     websocket.onopen = function () {
         // obj.fromUserId = ip;
@@ -2209,9 +2240,9 @@
 
 
         $(".dialogs").append(html);
-
-        console.log($(".dialogs"))
-        $(".dialogs").scrollTop = $(".dialogs").scrollHeight;
+        //让要把新收到的消息把原来的消息往上顶，因此要设置滚动条总是在最下面，因此要用到scrollTop
+        var message = document.getElementById('message');
+        message.scrollTop = message.scrollHeight;
 
 
     }
@@ -2235,17 +2266,23 @@
         var message = document.getElementById('text').value;
         if (!message) {
             layer.msg('你不想说点啥', function () {
+                $("#text").focus();
 
             });
-            $("#text").focus();
-            return false;
+
+        } else {
+            obj.content = message;
+            obj.fromUserId = ip;
+            obj.time = formatDate(new Date(), "yyyy-MM-dd hh:mm:ss");
+            websocket.send(JSON.stringify(obj));
+            document.getElementById('text').value = '';
+            $("#send-btn").hide();
+            $("#send").show();
 
         }
-        obj.content = message;
-        obj.fromUserId = ip;
-        obj.time = formatDate(new Date(), "yyyy-MM-dd hh:mm:ss");
-        websocket.send(JSON.stringify(obj));
-        document.getElementById('text').value = '';
+        $("#send-form").submit(function () {
+            return false;
+        });
     }
 
     //格式化日期,
@@ -2272,18 +2309,30 @@
         });
     }
 
-    $(function () {
+    $(document).ready(function () {
 
-        $("body").on("click", ".chat-send", function () {
+        $("body").on("click", "#send,#send-btn", function () {
             send();
         });
         $("body").on("click", ".chat-close", function () {
             closeWebSocket();
         });
+        $("body").on('input porpertychange',".layui-input",function(){
+            console.log($(this).val());
+            if($(this).val()){
+                $("#send-btn").show();
+                $("#send").hide();
+            }else {
+                $("#send-btn").hide();
+                $("#send").show();
+            }
+
+        });
         //回车登录
-        $("body").bind('keyup', function (event) {
-            if (event.keyCode == 13) {
-                $(".chat-send").trigger("click");
+        $("body").on('keyup', function (event) {
+
+            if (event.keyCode == '13') {
+                send();
             }
         });
 

@@ -31,13 +31,12 @@ public class OnlineUser {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         OnlineUser that = (OnlineUser) o;
-        return Objects.equals(loginTime, that.loginTime) &&
-                Objects.equals(ip, that.ip);
+        return Objects.equals(ip, that.ip);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(loginTime, ip);
+        return Objects.hash(ip);
     }
 }
