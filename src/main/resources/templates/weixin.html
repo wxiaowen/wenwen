@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns="//www.w3.org/1999/xhtml" xml:lang="zh" lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>页面切换</title>
+    <!-- 导入所需资源，注意资源的路径 -->
+    <link rel="stylesheet" href="weui.css" />
+    <link rel="stylesheet" href="example.css"/>
+    <script src="zepto.min.js"></script>
+    <script src="example.js"></script>
+
+    <script type="text/javascript">
+        <!-- 这段js代码具体操作界面切换的功能 -->
+        $(function(){
+            var winH = $(window).height();
+            var categorySpace = 10;
+
+            $('.js_item').on('click', function(){
+                var id = $(this).data('id');
+                window.pageManager.go(id);
+            });
+            $('.js_category').on('click', function(){
+                var $this = $(this),
+                    $inner = $this.next('.js_categoryInner'),
+                    $page = $this.parents('.page'),
+                    $parent = $(this).parent('li');
+                var innerH = $inner.data('height');
+                bear = $page;
+
+                if(!innerH){
+                    $inner.css('height', 'auto');
+                    innerH = $inner.height();
+                    $inner.removeAttr('style');
+                    $inner.data('height', innerH);
+                }
+
+                if($parent.hasClass('js_show')){
+                    $parent.removeClass('js_show');
+                }else{
+                    $parent.siblings().removeClass('js_show');
+
+                    $parent.addClass('js_show');
+                    if(this.offsetTop + this.offsetHeight + innerH > $page.scrollTop() + winH){
+                        var scrollTop = this.offsetTop + this.offsetHeight + innerH - winH + categorySpace;
+
+                        if(scrollTop > this.offsetTop){
+                            scrollTop = this.offsetTop - categorySpace;
+                        }
+
+                        $page.scrollTop(scrollTop);
+                    }
+                }
+            });
+        });
+    </script>

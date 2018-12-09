@@ -1,0 +1,125 @@
+.layim-chat-main ul li {
+    position: relative;
+    font-size: 0;
+    margin-bottom: 10px;
+    padding-left: 60px;
+    min-height: 68px;
+}
+.layim-chat-user {
+    position: absolute;
+    left: 3px;
+}
+.layim-chat-user img {
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+}
+.layim-chat-text, .layim-chat-user {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    vertical-align: top;
+    font-size: 15px;
+}
+.layim-chat-user cite {
+    position: absolute;
+    left: 60px;
+    top: -2px;
+    width: 500px;
+    line-height: 24px;
+    font-size: 12px;
+    white-space: nowrap;
+    color: #999;
+    text-align: left;
+    font-style: normal;
+}
+.layim-chat-text {
+    position: relative;
+    min-height: 22px;
+    line-height: 22px;
+    margin-top: 25px;
+    padding: 8px 15px;
+    background-color: #fff;
+    border-radius: 3px;
+    color: #333;
+    word-break: break-all;
+}
+.layim-chat-text:after {
+    content: '';
+    position: absolute;
+    left: -10px;
+    top: 13px;
+    width: 0;
+    height: 0;
+    border-style: solid dashed dashed;
+    border-color: #fff transparent transparent;
+    overflow: hidden;
+    border-width: 10px;
+}
+.layim-chat-user {
+    position: absolute;
+    left: 3px;
+}
+.layim-chat-main ul {
+    overflow-x: hidden;
+}
+.layim-chat-main ul .layim-chat-mine {
+    text-align: right;
+    padding-left: 0;
+    padding-right: 60px;
+}
+.layim-chat-mine .layim-chat-user {
+    left: auto;
+    right: 3px;
+}
+.layim-chat-mine .layim-chat-user cite {
+    left: auto;
+    right: 60px;
+    text-align: right;
+}
+.layim-chat-mine .layim-chat-text {
+    margin-left: 0;
+    text-align: left;
+    background-color: #5FB878;
+    color: #fff;
+}
+.layim-chat-main ul .layim-chat-mine {
+    text-align: right;
+    padding-left: 0;
+    padding-right: 60px;
+}
+.layim-chat-mine .layim-chat-text:after {
+    left: auto;
+    right: -10px;
+    border-top-color: #5FB878;
+}
+.layim-chat-send input {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+    height: 40px;
+    padding-left: 5px;
+    border: 0;
+    background-color: #fff;
+    border-radius: 3px;
+}
+.layim-chat-send button {
+    border-radius: 3px;
+    height: 40px;
+    padding: 0 20px;
+    border: 0;
+    margin-left: 10px;
+    background-color: #5FB878;
+    color: #fff;
+}
+.layim-chat-footer {
+    bottom: 0;
+    left: 10px;
+    right: 10px;
+
+}
+.layim-chat-send {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+}

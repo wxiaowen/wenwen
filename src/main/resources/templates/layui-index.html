@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>wenwen</title>
+
+    <link rel="stylesheet" href="/assets/layui/src/css/layui.css" media="all">
+    <link rel="stylesheet" href="/assets/layui/src/css/layim.css">
+    <script src="https://cdn.bootcss.com/stomp.js/2.3.3/stomp.min.js"></script>
+    <script src="https://cdn.bootcss.com/sockjs-client/1.1.4/sockjs.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/2.0.3/jquery.min.js"></script>
+    <!-- ace settings handler -->
+    <style>
+        body, html {
+            /*height: 100%;*/
+            /*padding: 0px!important;*/
+        }
+
+        .layui-elem-field legend {
+            margin: 0 auto !important;
+            padding: 0 10px;
+            font-size: 20px;
+            font-weight: 300;
+        }
+
+        .layui-tab-content {
+            padding: 0px !important;
+        }
+
+        .layui-layer-content {
+            height: 100% !important;
+        }
+
+        .layui-colla-content {
+            display: none;
+            padding: 0px !important;
+            line-height: 40px;
+            color: #666;
+        }
+
+        .layui-tab-card {
+            margin-bottom: 0px;
+            margin-top: 0px;
+            box-shadow: none;
+            border-top-style: none;
+        }
+
+        .layui-nav-img {
+            margin-left: 10px;
+        }
+
+        .layui-tab-card:hover {
+            background-color: #e2e2e2;
+        }
+
+        .layui-colla-title {
+            border-width: 0.5px;
+        }
+
+        .layui-footer {
+            left: 0 !important;
+            width: 100%;
+        }
+
+        .layui-body {
+            left: 0 !important;
+            width: 100%;
+        }
+
+        .layui-layout-admin .layui-footer {
+            position: unset !important;
+            left: unset !important;
+            right: unset !important;
+            bottom: unset !important;
+            height: 44px;
+            line-height: 44px;
+            padding: 0 !important;
+            background-color: #eee;
+        }
+
+        .layui-layout-admin .layui-body {
+            top: 0 !important;
+            bottom: 44px;
+        }
+
+        #message-content::-webkit-scrollbar {
+            display: none;
+        }
+
+    </style>
+</head>
+<body>
+<!--<fieldset class="layui-elem-field layui-field-title" style="margin-top: 50%;">-->
+<!--<legend>。。</legend>-->
+<!--</fieldset>-->
+<!--<div class="layui-carousel" id="test1" lay-filter="test1">-->
+<!--<div carousel-item="">-->
+<!--<div>条目1</div>-->
+<!--<div>条目2</div>-->
+<!--<div>条目3</div>-->
+<!--<div>条目4</div>-->
+<!--<div>条目5</div>-->
+<!--</div>-->
+<!--</div>-->
+<div id="tab-content" class="layui-layim-main" style="display: none;overflow: hidden">
+    <div class="layui-tab layui-tab-brief" lay-filter="web-tab">
+        <ul class="layui-tab-title layui-row">
+            <li class="layui-this layui-unselect layui-col-xs4 layui-layim-tab" lay-id="user"><i
+                    class="layui-icon layui-icon-friends"></i></li>
+            <li class="layui-unselect layui-col-xs4 layui-layim-tab" lay-id="users"><i
+                    class="layui-icon layui-icon-group"></i></li>
+            <li class="layui-unselect layui-col-xs4layui-layim-tab" lay-id="history"><i
+                    class="layui-icon layui-icon-find-fill"></i><span class="layui-badge-dot"></span></li>
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item">
+                <div class="layui-collapse" style="overflow:auto; height: 80%;">
+                    <div class="layui-colla-item">
+                        <h2 class="layui-colla-title">好友<span>(1)</span></h2>
+                        <div class="layui-colla-content">
+                            <ul>
+                                <li class="layui-tab-card">
+                                    <div class="contract"><img src="" class="layui-nav-img">
+                                        <canvas id="headImg" style="display:none"></canvas>
+                                        我
+                                    </div>
+                                </li>
+                                <li class="layui-tab-card ">
+                                    <div class="contract"><img src="" class="layui-nav-img">我</div>
+                                </li>
+                                <li class="layui-tab-card ">
+                                    <div class="contract"><img src="" class="layui-nav-img">我</div>
+                                </li>
+                                <li class="layui-tab-card ">
+                                    <div class="contract"><img src="" class="layui-nav-img">我</div>
+                                </li>
+                                <li class="layui-tab-card">
+                                    <div class="contract"><img src="" class="layui-nav-img">
+                                        <canvas id="headImg" style="display:none"></canvas>
+                                        我
+                                    </div>
+                                </li>
+                                <li class="layui-tab-card ">
+                                    <div class="contract"><img src="" class="layui-nav-img">我</div>
+                                </li>
+                                <li class="layui-tab-card ">
+                                    <div class="contract"><img src="" class="layui-nav-img">我</div>
+                                </li>
+                                <li class="layui-tab-card ">
+                                    <div class="contract"><img src="" class="layui-nav-img">我</div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="layui-colla-item">
+                        <h2 class="layui-colla-title">好友<span class="layui-badge layui-bg-gray">(1)</span></h2>
+                        <div class="layui-colla-content">
+                            <ul>
+                                <li class="layui-tab-card">
+                                    <div class="contract"><img src="" class="layui-nav-img">
+                                        <canvas id="headImg" style="display:none"></canvas>
+                                        我
+                                    </div>
+                                </li>
+                                <li class="layui-tab-card ">
+                                    <div class="contract"><img src="" class="layui-nav-img">我</div>
+                                </li>
+                                <li class="layui-tab-card ">
+                                    <div class="contract"><img src="" class="layui-nav-img">我</div>
+                                </li>
+                                <li class="layui-tab-card ">
+                                    <div class="contract"><img src="" class="layui-nav-img">我</div>
+                                </li>
+                                <li class="layui-tab-card">
+                                    <div class="contract"><img src="" class="layui-nav-img">
+                                        <canvas id="headImg" style="display:none"></canvas>
+                                        我
+                                    </div>
+                                </li>
+                                <li class="layui-tab-card ">
+                                    <div class="contract"><img src="" class="layui-nav-img">我</div>
+                                </li>
+                                <li class="layui-tab-card ">
+                                    <div class="contract"><img src="" class="layui-nav-img">我</div>
+                                </li>
+                                <li class="layui-tab-card ">
+                                    <div class="contract"><img src="" class="layui-nav-img">我</div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-tab-item">
+                <div class="layui-collapse">
+                    <div class="layui-colla-item">
+                        <h2 class="layui-colla-title">群组<span class="layui-badge layui-bg-gray">(0)</span></h2>
+                        <!--<div class="layui-colla-content">内容区域</div>-->
+                    </div>
+                </div>
+            </div>
+            <div class="layui-tab-item">history</div>
+        </div>
+
+    </div>
+</div>
+<!--<button class="layui-btn layui-btn-primary demo" data-type="test">Alert</button>-->
+<!--<button class="layui-btn demo" data-type="test2">Confirm</button>-->
+<!--<button class="layui-btn demo" data-type="test3">Msg</button>-->
+<!--<button class="layui-btn demo" data-type="test4">Tips</button>-->
+<button class="layui-btn chat" data-type="chat">chat</button>
+<!--<button class="layui-btn demo" data-type="test6">Iframe</button>-->
+<!--<button class="layui-btn chat" data-type="connect" id="connect-confirm">connect</button>-->
+<!--<button class="layui-btn chat" data-type="test8">Tab</button>-->
+<!--<a href="http://layer.layui.com/" target="_blank" class="layui-btn demo">更多例子</a>-->
+<div class="layui-layout layui-layout-admin" id="chat-layer" style="display: none">
+
+
+    <div class="layui-body ">
+        <!-- 内容主体区域 -->
+        <div id="message-content" class="layim-chat-main" style="padding: 15px;background-color: lightgray;overflow: auto">
+
+            <ul>
+                <li class="layim-chat-li"><div class="layim-chat-user"><img src="//tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg"><cite>贤心</cite></div><div class="layim-chat-text">嗨，欢迎体验LayIM。演示标记：1544267920583</div></li>
+                <li class="layim-chat-li layim-chat-mine"><div class="layim-chat-user"><img src="//tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg"><cite>纸飞机</cite></div><div class="layim-chat-text">12</div></li>
+                <li class="layim-chat-li"><div class="layim-chat-user"><img src="//tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg"><cite>贤心</cite></div><div class="layim-chat-text">嗨，欢迎体验LayIM。演示标记：1544267920583</div></li>
+                <li class="layim-chat-li layim-chat-mine"><div class="layim-chat-user"><img src="//tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg"><cite>纸飞机</cite></div><div class="layim-chat-text">12</div></li>
+                <li class="layim-chat-li"><div class="layim-chat-user"><img src="//tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg"><cite>贤心</cite></div><div class="layim-chat-text">嗨，欢迎体验LayIM。演示标记：1544267920583</div></li>
+                <li class="layim-chat-li layim-chat-mine"><div class="layim-chat-user"><img src="//tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg"><cite>纸飞机</cite></div><div class="layim-chat-text">12</div></li>
+                <li class="layim-chat-li"><div class="layim-chat-user"><img src="//tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg"><cite>贤心</cite></div><div class="layim-chat-text">嗨，欢迎体验LayIM。演示标记：1544267920583</div></li>
+                <li class="layim-chat-li layim-chat-mine"><div class="layim-chat-user"><img src="//tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg"><cite>纸飞机</cite></div><div class="layim-chat-text">12</div></li>
+            </ul>
+
+        </div>
+        <div class="layui-footer">
+            <div class="layim-chat-footer"><div class="layim-chat-send"><input type="text" autocomplete="off"><button class="layim-send layui-disabled" id="send-btn">发送</button></div></div>
+        </div>
+    </div>
+
+
+</div>
+<!--<div id="test11111" style="display: none;padding: 20px;">-->
+<!--123-->
+<!--</div>-->
+<!--[if !IE]> -->
+<script src="/assets/js/jquery-2.1.4.min.js"></script>
+
+<!-- <![endif]-->
+<script src="/assets/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+    window.jQuery || document.write("<script src='/assets/js/jquery-2.0.3.min.js'>" + "<" + "/script>");
+</script>
+<script type="text/javascript">
+    window.jQuery || document.write("<script src=/'assets/js/jquery-1.10.2.min.js'>" + "<" + "/script>");
+</script>
+<script type="text/javascript">
+    if ("ontouchend" in document) document.write("<script src='/assets/js/jquery.mobile.custom.min.js'>" + "<" + "/script>");
+</script>
+<script src="/assets/js/layer/layer.js"></script>
+<!-- ace scripts -->
+<script src="/assets/js/ace-elements.min.js"></script>
+<script src="/assets/js/ace.min.js"></script>
+<script src="/assets/layui/src/layui.js"></script>
+</body>
+<script src="https://pv.sohu.com/cityjson?ie=utf-8"></script>
+<script>
+    var ip = returnCitySN["cip"];
+    var obj = {
+        "fromUserId": '',
+        "toUserId": '',
+        "content": '',
+        "time": ''
+    };
+    var websocket = null;
+    //判断当前浏览器是否支持WebSocket
+    //获取访问地址
+    var currentPath = window.location.href;
+    var pathName = window.location.pathname;
+    var localhostPath = currentPath.substring(7, currentPath.length - 1);
+    console.log(localhostPath)
+    if ('WebSocket' in window) {
+        websocket = new WebSocket("ws://" + localhostPath + "/websocket/socketServer?fromIp=" + ip);
+    }
+    else {
+        alert('当前浏览器 Not support websocket')
+    }
+
+    //连接发生错误的回调方法
+    websocket.onerror = function () {
+        setMessageInnerHTML("连接发生错误");
+    };
+    layui.use('form', function () {
+        var form = layui.form;
+
+        //监听提交
+        form.on('submit(formDemo)', function (data) {
+            return false;
+        });
+        //自定义验证规则
+        form.verify({
+            message: function (value) {
+                if (!value) {
+                    layer.msg('你不想说点啥', function () {
+                        $("#text").focus();
+
+                    });
+                    return false;
+                }
+            }
+        });
+    });
+    //连接成功建立的回调方法
+    websocket.onopen = function () {
+        // obj.fromUserId = ip;
+        // obj.content = "连接成功";
+        // obj.time = formatDate(new Date(), "yyyy-MM-dd hh:mm:ss");
+        layer.msg(ip + '连接成功', {icon: 6});
+        // setMessageInnerHTML(obj);
+    }
+
+    //接收到消息的回调方法
+    websocket.onmessage = function (event) {
+        console.log(JSON.parse(event.data))
+        setMessageInnerHTML(JSON.parse(event.data));
+    }
+
+    //连接关闭的回调方法
+    websocket.onclose = function () {
+        setMessageInnerHTML("WebSocket连接关闭");
+    }
+
+    //监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
+    window.onbeforeunload = function () {
+        closeWebSocket();
+    }
+
+    //将消息显示在网页上
+    function setMessageInnerHTML(content) {
+        // $(".dialogs").append(JSON.stringify(content.fromUserId) + ":" + JSON.stringify(content.content) + '<br/>');
+        // document.getElementById('message').innerHTML += ;
+        var html = "<div class=\"itemdiv dialogdiv\">\n" +
+            "                                                    <div class=\"user\">\n" +
+            "                                                        <img alt=\"Alexa's Avatar\"\n" +
+            "                                                             src=\"/assets/images/avatars/avatar2.png\"/>\n" +
+            "                                                    </div>\n" +
+            "\n" +
+            "                                                    <div class=\"body\">\n" +
+            "                                                        <div class=\"time\">\n" +
+            "                                                            <i class=\"ace-icon fa fa-clock-o\"></i>\n" +
+            "                                                            <span class=\"green\"></span>\n" +
+            "                                                        </div>\n" +
+            "\n" +
+            "                                                        <div class=\"name\">\n" +
+            "                                                            <a href=\"#\">" + "From:" + content.fromUserId + "</a>\n" +
+            "                                                        </div>\n" +
+            "                                                        <div class=\"text\" id=\"message\">" + content.content +
+            "                                                        </div>\n" +
+            "                                                    </div>\n" +
+            "                                                </div>"
+
+
+        $(".dialogs").append(html);
+        //让要把新收到的消息把原来的消息往上顶，因此要设置滚动条总是在最下面，因此要用到scrollTop
+        var message = document.getElementById('message');
+        message.scrollTop = message.scrollHeight;
+
+
+    }
+
+    //关闭WebSocket连接
+    function closeWebSocket() {
+        websocket.close();
+    }
+
+    // //打开连接
+    // function openWebSocket() {
+    //     websocket = new WebSocket("wss://192.168.1.179:8002/websocket/socketServer");
+    //     //连接成功建立的回调方法
+    //     websocket.onopen = function () {
+    //         setMessageInnerHTML("WebSocket连接成功");
+    //     }
+    // }
+
+    //发送消息
+    function send() {
+        var message = document.getElementById('text').value;
+        if (!message) {
+            layer.msg('你不想说点啥', function () {
+                $("#text").focus();
+
+            });
+
+        } else {
+            obj.content = message;
+            obj.fromUserId = ip;
+            obj.time = formatDate(new Date(), "yyyy-MM-dd hh:mm:ss");
+            websocket.send(JSON.stringify(obj));
+            document.getElementById('text').value = '';
+            $("#send-btn").hide();
+            $("#send").show();
+
+        }
+        $("#send-form").submit(function () {
+            return false;
+        });
+    }
+
+    //格式化日期,
+    function formatDate(date, format) {
+        var paddNum = function (num) {
+            num += "";
+            return num.replace(/^(\d)$/, "0$1");
+        }
+        //指定格式字符
+        var cfg = {
+            yyyy: date.getFullYear() //年 : 4位
+            , yy: date.getFullYear().toString().substring(2)//年 : 2位
+            , M: date.getMonth() + 1  //月 : 如果1位的时候不补0
+            , MM: paddNum(date.getMonth() + 1) //月 : 如果1位的时候补0
+            , d: date.getDate()   //日 : 如果1位的时候不补0
+            , dd: paddNum(date.getDate())//日 : 如果1位的时候补0
+            , hh: paddNum(date.getHours())  //时
+            , mm: paddNum(date.getMinutes()) //分
+            , ss: paddNum(date.getSeconds()) //秒
+        }
+        format || (format = "yyyy-MM-dd hh:mm:ss");
+        return format.replace(/([a-z])(\1)*/ig, function (m) {
+            return cfg[m];
+        });
+    }
+
+
+    $(document).ready(function () {
+
+        $("body").on("click", "#send,#send-btn", function () {
+            send();
+        });
+        $("body").on("click", ".chat-close", function () {
+            closeWebSocket();
+        });
+        $("body").on('input porpertychange',".layui-input",function(){
+            console.log($(this).val());
+            if($(this).val()){
+                $("#send-btn").show();
+                $("#send").hide();
+            }else {
+                $("#send-btn").hide();
+                $("#send").show();
+            }
+
+        });
+        //回车登录
+        $("body").on('keyup', function (event) {
+
+            if (event.keyCode == '13') {
+                send();
+            }
+        });
+
+        layui.use('element', function () {
+            var element = layui.element;
+
+            //获取hash来切换选项卡，假设当前地址的hash为lay-id对应的值
+            var layid = location.hash.replace(/^#web-tab=/, '');
+            element.tabChange('web-tab', layid); //假设当前地址为：http://a.com#test1=222，那么选项卡会自动切换到“发送消息”这一项
+
+            //监听Tab切换，以改变地址hash值
+            element.on('tab(web-tab)', function (data) {
+                console.log(data);
+                location.hash = 'web-tab=' + this.getAttribute('lay-id');
+            });
+
+            //监听导航点击
+            element.on('nav(demo)', function (elem) {
+                //console.log(elem)
+                layer.msg(elem.text());
+            });
+        });
+        layui.use('layer', function () {
+            var $ = layui.jquery, layer = layui.layer; //独立版的layer无需执行这一句
+
+            //触发事件
+            var active = {
+                test: function () {
+                    layer.alert('你好么，体验者');
+                }
+                , test2: function () {
+                    layer.confirm('您是如何看待前端开发？', {
+                        btn: ['重要', '奇葩'] //按钮
+                    }, function () {
+                        layer.msg('的确很重要', {icon: 1});
+                    }, function () {
+                        layer.msg('也可以这样', {
+                            time: 20000, //20s后自动关闭
+                            btn: ['明白了', '知道了']
+                        });
+                    });
+                }
+                , test3: function () {
+                    layer.msg('玩命提示中');
+                }
+                , test4: function () {
+                    layer.tips('Hi，我是一个小提示', this, {tips: 1});
+                }
+                , chat: function () {
+
+                    layer.open({
+                        title: 'wen',
+                        type: 1,
+                        anim: 3,
+                        btnAlign: 'c',
+                        shadeClose: true,
+                        shade: false,
+                        scrollbar: false,
+                        maxmin: true,
+                        skin: 'layer-ext-moon',
+                        offset: '100px',
+                        area: ['90%', '80%'],
+                        content: $('#tab-content')
+                    });
+
+                    $(".layui-collapse").height($(".layui-layer").offsetHeight - $(".layui-layer").offsetTop)
+                }
+                // , test6: function () {
+                //     layer.open({
+                //         type: 2
+                //         , content: 'http://fly.layui.com/'
+                //         , area: ['375px', '500px']
+                //         , maxmin: true
+                //     });
+                // }
+                , connect: function () {
+                    layer.prompt({title: '输入名字，并确认', formType: 1}, function (pass, index) {
+                        layer.msg('你的用户名：' + pass);
+                        layer.close(index);
+                        // layer.prompt({title: '随便写点啥，并确认', formType: 2}, function (text, index) {
+                        //     layer.close(index);
+                        //     layer.msg('演示完毕！您的口令：' + pass + '<br>您最后写下了：' + text);
+                        // });
+                    });
+                }
+                , test8: function () {
+
+                    layer.tab({
+                        area: ['600px', '300px'],
+                        tab: [{
+                            title: 'TAB1',
+                            content: '内容1'
+                        }, {
+                            title: 'TAB2',
+                            content: '内容2'
+                        }, {
+                            title: 'TAB3',
+                            content: '内容3'
+                        }]
+                    });
+                }
+            };
+            $("body").on('click', '.chat', function () {
+                var type = $(this).data('type');
+                active[type] ? active[type].call(this) : '';
+            });
+            $("body").on('click', '.contract', function () {
+                //iframe层-禁滚动条
+                layer.open({
+                    title: $(this)[0].innerText,
+                    type: 1,
+                    anim: 3,
+                    scrollbar: false,
+                    area: ['90%', '80%'],
+                    skin: 'layui-layer-lan', //加上边框
+                    content: $("#chat-layer"),
+
+                });
+                $("#message-content").height(($(".layui-body").height() - $(".layui-layer-title").height() - $(".layui-footer")[0].offsetHeight)+10);
+            });
+
+        });
+
+
+        layer.ready(function () {
+
+            textToImg("网");
+            // layer.prompt({title: '输入名字，并确认', formType: 1}, function (pass, index) {
+            //     // layer.msg('你的用户名：' + pass);
+            //     layer.open({
+            //         title: pass,
+            //         type: 1,
+            //         maxmin: true,
+            //         skin: 'layui-layer-rim',
+            //         area: ['80%', '60%'],
+            //         content: $('#tab-content')
+            //     });
+            // });
+        });
+
+    })
+
+
+    function textToImg(uname) {
+        var name = uname.charAt(0);
+        var fontSize = 60;
+        var fontWeight = '';
+        var canvas = document.getElementById('headImg');
+        var img1 = document.getElementById('headImg');
+        canvas.width = 120;
+        canvas.height = 120;
+        var context = canvas.getContext('2d');
+        context.fillStyle = 'orange';
+        context.fillRect(0, 0, canvas.width, canvas.height);
+        context.fillStyle = 'black';
+        context.font = fontWeight + ' ' + fontSize + 'px sans-serif';
+        context.textAlign = 'center';
+        context.textBaseline = "middle";
+        context.fillText(name, fontSize, fontSize);
+        $('.layui-nav-img').attr('src', canvas.toDataURL("image/png"));
+    };
+</script>
+</html>

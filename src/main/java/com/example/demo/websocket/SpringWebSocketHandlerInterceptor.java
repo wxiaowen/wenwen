@@ -1,5 +1,7 @@
 package com.example.demo.websocket;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.http.server.ServletServerHttpRequest;
@@ -17,16 +19,22 @@ import java.util.Map;
  * @author wxw
  */
 public class SpringWebSocketHandlerInterceptor extends HttpSessionHandshakeInterceptor {
+    private static final Logger logger = LoggerFactory.getLogger(SpringWebSocketHandlerInterceptor.class);
+
     @Override
     public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler,
                                    Map<String, Object> attributes) throws Exception {
+
         if (request instanceof ServletServerHttpRequest) {
-            //获取登录用户，存入websocket中
             HttpServletRequest httpServletRequest = ((ServletServerHttpRequest) request).getServletRequest();
-            String fromIp = httpServletRequest.getParameter("fromIp");
-            attributes.put("FROM_USER_IP", fromIp);
+            String from = httpServletRequest.getParameter("from");
+            String name = httpServletRequest.getParameter("name");
+            attributes.put("ip", from);
+            attributes.put("name", name);
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            attributes.put("LOGIN_TIME", sdf.format(new Date()));
+            String timeStr = sdf.format(new Date());
+            attributes.put("loginTime", timeStr);
+            logger.info("name:{},from:{},loginTime:{}", name, from, timeStr);
         }
         return super.beforeHandshake(request, response, wsHandler, attributes);
 

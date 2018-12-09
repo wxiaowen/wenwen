@@ -2,53 +2,60 @@ package com.example.demo.websocket;
 
 import com.example.demo.model.OnlineUser;
 import com.google.gson.Gson;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import com.google.gson.JsonObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
+import org.springframework.web.socket.WebSocketMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * WebSocket业务处理
  */
+@Service("chatHandler")
 public class SpringWebSocketHandler extends TextWebSocketHandler {
-    /**
-     * 当前在线用户
-     */
-    private static final ArrayList<WebSocketSession> users;
-    private static final List<OnlineUser> onlineUsers;
+    //在线用户列表
+    private static final Map<String, WebSocketSession> users;
+
+    //用户标识
+    private static final String CLIENT_ID = "name";
 
 
     private static final Logger logger = LoggerFactory.getLogger(SpringWebSocketHandler.class);
 
     static {
-        users = new ArrayList<>();
-        onlineUsers = new ArrayList<>();
+        users = new HashMap<>();
     }
 
-    public SpringWebSocketHandler() {
-    }
 
-    /**
-     * 连接成功时候，会触发页面上onopen方法
-     */
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-        String fromUserIp = session.getAttributes().get("FROM_USER_IP").toString();
+        String userId = getClientId(session);
+        logger.info("{}成功建立连接", userId);
+        if (userId != null) {
+            users.put(userId, session);
+            OnlineUser onlineUser = new OnlineUser();
+            String name = (String) session.getAttributes().get("name");
+            String ip = (String) session.getAttributes().get("ip");
+            String loginTime = (String) session.getAttributes().get("loginTime");
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("name", name);
+            jsonObject.addProperty("from", ip);
+            jsonObject.addProperty("to", "");
+            jsonObject.addProperty("time", loginTime);
+            jsonObject.addProperty("content", "上线成功");
+            jsonObject.addProperty("extra", "1");
+            sendMessageToAllUsers(new TextMessage(jsonObject.toString()), name);
+        }
 
-        users.add(session);
-        logger.info("{}连接到WebSocket成功......当前连接数量:" + users.size(), fromUserIp);
-        List<OnlineUser> List = getAllOnlineUsers();
-        Gson gson=new Gson();
-        logger.info("在线{}", gson.toJson(List));
 
     }
 
@@ -57,13 +64,15 @@ public class SpringWebSocketHandler extends TextWebSocketHandler {
      */
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus closeStatus) throws Exception {
-
-        String fromUserIp = session.getAttributes().get("FROM_USER_IP").toString();
-        logger.info("用户" + fromUserIp + "已退出！");
-        removeOnlineUser(fromUserIp);
-        users.remove(session);
-        logger.debug("{}连接已关闭......", fromUserIp);
-        logger.info("剩余在线用户" + users.size());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String timeStr = sdf.format(new Date());
+        String name = (String) session.getAttributes().get("name");
+        String ip = (String) session.getAttributes().get("ip");
+        String loginTime = (String) session.getAttributes().get("loginTime");
+        long time = System.currentTimeMillis() - sdf.parse(loginTime).getTime();
+        users.remove(getClientId(session));
+        logger.info("连接已关闭：" + closeStatus);
+        logger.info("user:{},time-count:{}毫秒,ip:{}", name, time, ip);
     }
 
     /**
@@ -71,9 +80,14 @@ public class SpringWebSocketHandler extends TextWebSocketHandler {
      */
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-        sendMessageToUser("", "", message);
-        super.handleTextMessage(session, message);
+        logger.info(message.toString());
+        try {
+            session.sendMessage(message);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
+
 
     /**
      * 处理传输错误
@@ -83,8 +97,8 @@ public class SpringWebSocketHandler extends TextWebSocketHandler {
         if (session.isOpen()) {
             session.close();
         }
-        logger.error("传输错误WebSocket连接已关闭......");
-        users.remove(session);
+        logger.error("连接出错");
+        users.remove(getClientId(session));
     }
 
     @Override
@@ -94,63 +108,92 @@ public class SpringWebSocketHandler extends TextWebSocketHandler {
 
 
     /**
-     * 给某个用户发送消息
+     * 获取用户标识
+     *
+     * @param session
+     * @return
+     */
+    private String getClientId(WebSocketSession session) {
+        try {
+            String clientId = (String) session.getAttributes().get(CLIENT_ID);
+            return clientId;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    /**
+     * 发送信息给指定用户
+     *
+     * @param clientId
+     * @param message
+     * @return
+     */
+    public boolean sendMessageToUser(String clientId, TextMessage message) {
+        if (users.get(clientId) == null || "".equals(users.get(clientId))) {
+            return false;
+        }
+        WebSocketSession session = users.get(clientId);
+        logger.info("sendMessage:" + session);
+        if (!session.isOpen()) {
+            return false;
+        }
+        try {
+            session.sendMessage(message);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * 广播信息
      *
      * @param message
+     * @return
      */
-    public void sendMessageToUser(String acceptUser, String sendUser, TextMessage message) {
-        if (users.size() > 0) {
-            //是否成功发送
-            Boolean isSend = false;
-            for (WebSocketSession user : users) {
-                try {
-                    if (user.isOpen()) {
-                        //发送消息
-                        user.sendMessage(message);
-                        isSend = true;
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
+    public boolean sendMessageToAllUsers(TextMessage message, String currentName) {
+        boolean allSendSuccess = true;
+        Set<String> clientIds = users.keySet();
+        WebSocketSession session = null;
+        for (String clientId : clientIds) {
+            try {
+                session = users.get(clientId);
+                if (session.isOpen() && !currentName.equals(clientId)) {
+                    session.sendMessage(message);
                 }
-
+            } catch (IOException e) {
+                e.printStackTrace();
+                allSendSuccess = false;
             }
-
-
         }
+
+        return allSendSuccess;
     }
 
-    public List<OnlineUser> getAllOnlineUsers() {
-        if (users.size() > 0) {
-            for (WebSocketSession user : users) {
-                if (user.isOpen()) {
-                    String fromUserIp = user.getAttributes().get("FROM_USER_IP").toString();
-                    String loginTime = user.getAttributes().get("LOGIN_TIME").toString();
-                    OnlineUser onlineUser = new OnlineUser();
-                    onlineUser.setIp(fromUserIp);
-                    onlineUser.setLoginTime(loginTime);
-                    if (!onlineUsers.contains(onlineUser)) {
-                        onlineUsers.add(onlineUser);
-                    }
-
+    /**
+     * 获取在线用户
+     */
+    public List<OnlineUser> getAllUsers() {
+        Gson gson=new Gson();
+        List<OnlineUser> onlineUsers = new ArrayList<>();
+        if (users != null && users.size() > 0) {
+            for (String user : users.keySet()) {
+                OnlineUser onlineUser = new OnlineUser();
+                String name = (String) users.get(user).getAttributes().get("name");
+                String ip = (String) users.get(user).getAttributes().get("ip");
+                String loginTime = (String) users.get(user).getAttributes().get("loginTime");
+                onlineUser.setName(name);
+                onlineUser.setLoginTime(loginTime);
+                onlineUser.setIp(ip);
+                if (!onlineUsers.contains(onlineUser)) {
+                    onlineUsers.add(onlineUser);
                 }
-            }
 
+            }
         }
+        logger.info("在线用户{}",gson.toJson(onlineUsers));
         return onlineUsers;
-
     }
-
-
-    public void removeOnlineUser(String ip) {
-        int size = onlineUsers.size();
-        for (int i = size - 1; i >= 0; i--) {
-            if (ip.equals(onlineUsers.get(i).getIp())) {
-                onlineUsers.remove(i);
-            }
-
-        }
-
-    }
-
-
 }

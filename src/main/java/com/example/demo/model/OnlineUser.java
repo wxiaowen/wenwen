@@ -9,6 +9,7 @@ import java.util.Objects;
 public class OnlineUser {
     private String loginTime;
     private String ip;
+    private String name;
 
     public String getLoginTime() {
         return loginTime;
@@ -26,17 +27,26 @@ public class OnlineUser {
         this.ip = ip;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         OnlineUser that = (OnlineUser) o;
-        return Objects.equals(ip, that.ip);
+        return Objects.equals(ip, that.ip) &&
+                Objects.equals(name, that.name);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(ip);
+        return Objects.hash(ip, name);
     }
 }
