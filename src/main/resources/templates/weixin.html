@@ -1,56 +1,798 @@
 <!DOCTYPE html>
-<html xmlns="//www.w3.org/1999/xhtml" xml:lang="zh" lang="zh">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
-    <title>页面切换</title>
-    <!-- 导入所需资源，注意资源的路径 -->
-    <link rel="stylesheet" href="weui.css" />
-    <link rel="stylesheet" href="example.css"/>
-    <script src="zepto.min.js"></script>
-    <script src="example.js"></script>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>wenwen</title>
 
-    <script type="text/javascript">
-        <!-- 这段js代码具体操作界面切换的功能 -->
-        $(function(){
-            var winH = $(window).height();
-            var categorySpace = 10;
+    <!--<link rel="stylesheet" href="/assets/layer_mobile/need/layer.css">-->
+    <!--<link rel="stylesheet" href="/assets/layui/src/css/layim.css">-->
+    <!--<link rel="stylesheet" href="/assets/layui/src/css/layui.css">-->
+    <!--<link rel="stylesheet" href="/assets/layui/src/css/layui.mobile.css">-->
+    <!-- head 中 -->
+    <link rel="stylesheet" href="/assets/jquery-weui/src/lib/weui.min.css">
+    <link rel="stylesheet" href="/assets/jquery-weui/dist/css/jquery-weui.min.css">
+    <link rel="stylesheet" href="/assets/weui-master/css/weui.css"/>
+    <link rel="stylesheet" href="/assets/weui-master/css/weui2.css"/>
+    <link rel="stylesheet" href="/assets/weui-master/css/weuix.css"/>
+    <link rel="stylesheet" href="/assets/weui-master/css/icon.css"/>
+    <script src="/assets/weui-master/js/zepto.min.js"></script>
+    <script src="/assets/weui-master/js/zepto.weui.js"></script>
+    <script src="/assets/weui-master/js/php.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/2.0.3/jquery.min.js"></script>
+    <script src="/assets/jquery-weui/dist/js/jquery-weui.min.js"></script>
+    <script src="/assets/js/jquery.cookie.js"></script>
+    <script>
+        $(function () {
+            var ani = $("#ani");
+            // $('.weui_btn').click(function(){
 
-            $('.js_item').on('click', function(){
-                var id = $(this).data('id');
-                window.pageManager.go(id);
-            });
-            $('.js_category').on('click', function(){
-                var $this = $(this),
-                    $inner = $this.next('.js_categoryInner'),
-                    $page = $this.parents('.page'),
-                    $parent = $(this).parent('li');
-                var innerH = $inner.data('height');
-                bear = $page;
+            if (ani.hasClass($(this).data('ani'))) {
+                ani.removeClass();
+            } else {
+                ani.addClass($(this).data('ani') + "  animated checked");
 
-                if(!innerH){
-                    $inner.css('height', 'auto');
-                    innerH = $inner.height();
-                    $inner.removeAttr('style');
-                    $inner.data('height', innerH);
-                }
+            }
+            // })
 
-                if($parent.hasClass('js_show')){
-                    $parent.removeClass('js_show');
-                }else{
-                    $parent.siblings().removeClass('js_show');
+            $(document.body).pullToRefresh(function () {
+                setTimeout(function () {
 
-                    $parent.addClass('js_show');
-                    if(this.offsetTop + this.offsetHeight + innerH > $page.scrollTop() + winH){
-                        var scrollTop = this.offsetTop + this.offsetHeight + innerH - winH + categorySpace;
+                    prompt();
+                    $(document.body).pullToRefreshDone();
 
-                        if(scrollTop > this.offsetTop){
-                            scrollTop = this.offsetTop - categorySpace;
-                        }
-
-                        $page.scrollTop(scrollTop);
-                    }
-                }
+                }, 2000);
             });
         });
+
     </script>
+
+    <!-- ace settings handler -->
+    <style>
+        body, html {
+            /*height: 100%;*/
+            /*padding: 0px!important;*/
+        }
+
+        .layui-elem-field legend {
+            margin: 0 auto !important;
+            padding: 0 10px;
+            font-size: 20px;
+            font-weight: 300;
+        }
+
+        .layui-tab-content {
+            padding: 0px !important;
+        }
+
+        .layui-layer-content {
+            height: 100% !important;
+        }
+
+        .layui-colla-content {
+            display: none;
+            padding: 0px !important;
+            line-height: 40px;
+            color: #666;
+        }
+
+        .layui-tab-card {
+            margin-bottom: 0px;
+            margin-top: 0px;
+            box-shadow: none;
+            border-top-style: none;
+        }
+
+        .layui-nav-img {
+            margin-left: 10px;
+        }
+
+        .layui-tab-card:hover {
+            background-color: #e2e2e2;
+        }
+
+        .layui-colla-title {
+            border-width: 0.5px;
+        }
+
+        .layui-footer {
+            left: 0 !important;
+            width: 100%;
+        }
+
+        .layui-body {
+            left: 0 !important;
+            width: 100%;
+        }
+
+        .layui-layout-admin .layui-footer {
+            position: unset !important;
+            left: unset !important;
+            right: unset !important;
+            bottom: unset !important;
+            height: 44px;
+            line-height: 44px;
+            padding: 0 !important;
+            background-color: #eee;
+        }
+
+        .layui-layout-admin .layui-body {
+            top: 0 !important;
+            bottom: 44px;
+        }
+
+        #message-content::-webkit-scrollbar {
+            display: none;
+        }
+
+        .weui-panel {
+            margin: 0;
+        }
+
+        .weui-media-box {
+            padding: 8px 15px;
+        }
+
+        .weui-panel__bd .weui-media-box__hd {
+            width: 50px;
+            height: 50px;
+            line-height: 50px;
+            position: relative;
+        }
+
+        .weui-media-box__desc {
+            -webkit-line-clamp: 1;
+        }
+
+        .weui-media-box__title {
+            margin-top: -4px;
+        }
+
+        .weui-header .weui-header-title, .weui-header h1 {
+            margin: 0 88px;
+            margin-left: 100px;
+            line-height: 40px;
+            text-align: center;
+            height: 40px;
+            font-size: 18px;
+            font-weight: 400;
+            width: auto;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            color: #fff;
+        }
+
+        .icon {
+            font-family: iconfont !important;
+            font-size: 16px;
+            font-style: normal;
+            -webkit-font-smoothing: antialiased;
+            -webkit-text-stroke-width: .2px;
+        }
+
+        .bg-blue {
+            background-color: #353535 !important;
+        }
+
+        .weui-panel_hd {
+            background-color: #36373C;
+            color: white;
+            height: 50px
+        }
+    </style>
+</head>
+<body ontouchstart>
+<div class="weui-pull-to-refresh__layer">
+    <div class='weui-pull-to-refresh__arrow'></div>
+    <div class='weui-pull-to-refresh__preloader'></div>
+    <div class="down">下拉刷新</div>
+    <div class="up">释放刷新</div>
+    <div class="refresh">正在刷新</div>
+</div>
+
+<div class="weui-tab">
+    <div class="weui-tab__bd">
+        <div id="tab1" class="weui-tab__bd-item weui-tab__bd-item--active">
+            <div class="page__pd">
+                <!--<div class="weui-panel_hd" style=""><span id="">联系人(10)</span></div>-->
+                <div class="weui-header bg-blue">
+                    <div class="weui-header-left"><a class="icon icon-109 f-white" href="/"><span  id="chat-friend"></span></a></div>
+                    <h1 class="weui-header-title"></h1>
+                    <div class="weui-header-right"><a class="icon icon-83 f-white"></a></div>
+                </div>
+                <!--<div class="weui-panel weui-panel_access">-->
+                    <!--<div class="weui-panel__bd" id="friends">-->
+                        <!--&lt;!&ndash;<a href="/blank.shtml" class="weui-media-box weui-media-box_appmsg">&ndash;&gt;-->
+                        <!--&lt;!&ndash;<div class="weui-media-box__hd">&ndash;&gt;-->
+                        <!--&lt;!&ndash;<img class="weui-media-box__thumb pulse animated checked" src="/assets/jquery-weui/demos/images/avatar.jpg" alt="">&ndash;&gt;-->
+                        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                        <!--&lt;!&ndash;<div class="weui-media-box__bd">&ndash;&gt;-->
+                        <!--&lt;!&ndash;<h4 class="weui-media-box__title">&ndash;&gt;-->
+                        <!--&lt;!&ndash;刘亦菲&ndash;&gt;-->
+                        <!--&lt;!&ndash;<span class="weui-media-box__title-after">下午8:12</span>&ndash;&gt;-->
+                        <!--&lt;!&ndash;</h4>&ndash;&gt;-->
+                        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                        <!--&lt;!&ndash;</a>&ndash;&gt;-->
+                    <!--</div>-->
+                    <!--&lt;!&ndash;<div id="ani" style="width:50px;height:50px;font-size:18px;background:#04b567;opacity:0.5;border-radius:50%;" >&ndash;&gt;-->
+                <!--</div>-->
+            </div>
+
+        </div>
+        <div id="tab2" class="weui-tab__bd-item">
+            <div class="weui-header bg-blue">
+                <div class="weui-header-left"><a class="icon icon-109 f-white">返回</a></div>
+                <h1 class="weui-header-title">更多</h1>
+                <div class="weui-header-right"><a class="icon icon-83 f-white"></a></div>
+            </div>
+        </div>
+        <div id="tab3" class="weui-tab__bd-item">
+            <div class="weui-header bg-blue">
+                <div class="weui-header-left"><a class="icon icon-109 f-white">返回</a></div>
+                <h1 class="weui-header-title">我们都爱小电影</h1>
+                <div class="weui-header-right"><a class="icon icon-83 f-white"></a></div>
+            </div>
+            <!--<div class="page-bd-15">-->
+            <!--<a href="javascript:;" class="weui-btn weui-btn_primary" onclick="share()">分享到朋友圈</a>-->
+            <!--</div>-->
+        </div>
+    </div>
+
+    <div class="weui-tabbar">
+
+    </div>
+</div>
+
+<div id="tab-content" class="layui-layim-main" style="display: none;overflow: hidden">
+    <div class="layui-tab layui-tab-brief" lay-filter="web-tab">
+        <ul class="layui-tab-title layui-row">
+            <li class="layui-this layui-col-xs4" lay-id="user"><i
+                    class="layui-icon layui-icon-friends"></i></li>
+            <li class="layui-col-xs4" lay-id="users"><i
+                    class="layui-icon layui-icon-group"></i></li>
+            <li class="layui-col-xs4" lay-id="history"><i
+                    class="layui-icon layui-icon-find-fill"></i><span class="layui-badge-dot"></span></li>
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item">
+                <div class="layui-collapse" style="overflow:auto; height: 80%;">
+                    <div class="layui-colla-item">
+                        <h2 class="layui-colla-title">好友<span id="online-count"></span></h2>
+                        <div class="layui-colla-content">
+                            <ul id="online-users">
+
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="layui-tab-item">
+                <div class="layui-collapse">
+                    <div class="layui-colla-item">
+                        <h2 class="layui-colla-title">群组<span class="layui-badge layui-bg-gray">(0)</span></h2>
+                        <!--<div class="layui-colla-content">内容区域</div>-->
+                    </div>
+                </div>
+            </div>
+            <div class="layui-tab-item">history</div>
+        </div>
+
+    </div>
+</div>
+<!--<button class="layui-btn layui-btn-primary demo" data-type="test">Alert</button>-->
+<!--<button class="layui-btn demo" data-type="test2">Confirm</button>-->
+<!--<button class="layui-btn demo" data-type="test3">Msg</button>-->
+<!--<button class="layui-btn demo" data-type="test4">Tips</button>-->
+<!--<button class="layui-btn chat" data-type="chat">chat</button>-->
+<!--<button class="layui-btn demo" data-type="test6">Iframe</button>-->
+<!--<button class="layui-btn chat" data-type="connect" id="connect-confirm">connect</button>-->
+<!--<button class="layui-btn chat" data-type="test8">Tab</button>-->
+<!--<a href="http://layer.layui.com/" target="_blank" class="layui-btn demo">更多例子</a>-->
+<div class="layui-layout layui-layout-admin" id="chat-layer" style="display: none">
+
+
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+        <div id="message-content" class="layim-chat-main"
+             style="padding: 15px;background-color: lightgray;overflow: auto">
+            <ul class="dialogs">
+            </ul>
+
+        </div>
+        <div class="layui-footer">
+            <div class="layim-chat-footer">
+                <div class="layim-chat-send"><input type="text" id="text" autocomplete="off" class="layui-input">
+                    <button class="layim-send layui-disabled" id="send-btn">发送</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+<script src="https://cdn.bootcss.com/stomp.js/2.3.3/stomp.min.js"></script>
+<script src="https://cdn.bootcss.com/sockjs-client/1.1.4/sockjs.min.js"></script>
+
+<!--[if !IE]> -->
+<script src="/assets/js/jquery-2.1.4.min.js"></script>
+<!-- <![endif]-->
+<script src="/assets/js/bootstrap.min.js"></script>
+<!--<script type="text/javascript">-->
+<!--window.jQuery || document.write("<script src='/assets/js/jquery-2.0.3.min.js'>" + "<" + "/script>");-->
+<!--</script>-->
+<!--<script type="text/javascript">-->
+<!--window.jQuery || document.write("<script src=/'assets/js/jquery-1.10.2.min.js'>" + "<" + "/script>");-->
+<!--</script>-->
+<!--<script type="text/javascript">-->
+<!--if ("ontouchend" in document) document.write("<script src='/assets/js/jquery.mobile.custom.min.js'>" + "<" + "/script>");-->
+<!--</script>-->
+<!--<script src="/assets/js/layer/layer.js"></script>-->
+
+
+<!--<script src="/assets/layui/src/layui.js"></script>-->
+<!--<script src="/assets/layer_mobile/layer.js"></script>-->
+
+<script src="/assets/jquery-weui/dist/lib/jquery-2.1.4.js"></script>
+<script src="/assets/jquery-weui/dist/lib/fastclick.js"></script>
+<script>
+    $(function () {
+        FastClick.attach(document.body);
+    });
+</script>
+<script src="/assets/jquery-weui/dist/js/jquery-weui.js"></script>
+
+<script>
+
+
+</script>
+</body>
+<script src="https://pv.sohu.com/cityjson?ie=utf-8"></script>
+<script>
+    var active;
+    var ip = returnCitySN["cip"];
+    var obj = {
+        "from": '',
+        "to": '',
+        "content": '',
+        "time": '',
+        "extra": ''
+    };
+    var currentName;
+    var currentPath = window.location.href;
+    var pathName = window.location.pathname;
+    var localhostPath = currentPath.substring(7, currentPath.lastIndexOf(pathName));
+
+    function connect(name) {
+        try {
+            if ('WebSocket' in window) {
+                websocket = new WebSocket("ws://" + localhostPath + "/websocket/socketServer?from=" + ip + "&name=" + name.trim());
+            }
+            else {
+                alert('当前浏览器 Not support websocket')
+            }
+        } catch (e) {
+            alert('error');
+            return;
+        }
+        websocket.onopen = sOpen;
+        websocket.onerror = sError;
+        websocket.onmessage = sMessage;
+        websocket.onclose = sClose;
+    }
+
+    function sOpen(e) {
+        console.log(e)
+        $.toast("连接成功");
+
+        getOnlineUsers();
+    }
+
+    function sError(e) {
+        console.log(e)
+        setMessageInnerHTML("连接发生错误");
+    }
+
+    function sMessage(event) {
+        var obj = JSON.parse(event.data);
+        if (obj.extra == "1") {
+            notice("", obj.name + "上线");
+            getOnlineUsers();
+        } else {
+            setMessageInnerHTML(obj);
+        }
+    }
+
+    function sClose(e) {
+        setMessageInnerHTML("连接关闭");
+    }
+
+    function send(from, to) {
+        var message = document.getElementById('text').value;
+        if (!message) {
+            layer.msg('你不想说点啥', function () {
+                $("#text").focus();
+            });
+
+        } else {
+            obj.content = message;
+            obj.to = to;
+            obj.from = currentName;
+            obj.time = formatDate(new Date(), "yyyy-MM-dd hh:mm:ss");
+            websocket.send(JSON.stringify(obj));
+            document.getElementById('text').value = '';
+            // $("#send-btn").hide();
+            // $("#send").show();
+
+        }
+        $("#send-form").submit(function () {
+            return false;
+        });
+    }
+
+    //监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
+    window.onbeforeunload = function () {
+        // sClose();
+    }
+    // layui.use('form', function () {
+    //     var form = layui.form;
+    //
+    //     //监听提交
+    //     form.on('submit(formDemo)', function (data) {
+    //         return false;
+    //     });
+    //     //自定义验证规则
+    //     form.verify({
+    //         message: function (value) {
+    //             if (!value) {
+    //                 layer.msg('你不想说点啥', function () {
+    //                     $("#text").focus();
+    //
+    //                 });
+    //                 return false;
+    //             }
+    //         }
+    //     });
+    // });
+    // layui.use('element', function () {
+    //     var element = layui.element;
+    //
+    //     //获取hash来切换选项卡，假设当前地址的hash为lay-id对应的值
+    //     var layid = location.hash.replace(/^#web-tab=/, '');
+    //     element.tabChange('web-tab', layid); //假设当前地址为：http://a.com#test1=222，那么选项卡会自动切换到“发送消息”这一项
+    //
+    //     //监听Tab切换，以改变地址hash值
+    //     element.on('tab(web-tab)', function (data) {
+    //         console.log(data);
+    //         location.hash = 'web-tab=' + this.getAttribute('lay-id');
+    //     });
+    //
+    //     //监听导航点击
+    //     element.on('nav(demo)', function (elem) {
+    //         //console.log(elem)
+    //         layer.msg(elem.text());
+    //     });
+    // });
+    // layui.use('layer', function () {
+    //     var $ = layui.jquery, layer = layui.layer; //独立版的layer无需执行这一句
+    //
+    //     //触发事件
+    //     active = {
+    //         //聊天
+    //         chat: function (name) {
+    //             layer.open({
+    //                 title: name,
+    //                 type: 1,
+    //                 anim: 3,
+    //                 btnAlign: 'c',
+    //                 shadeClose: true,
+    //                 shade: false,
+    //                 scrollbar: false,
+    //                 maxmin: true,
+    //                 skin: 'layer-ext-moon',
+    //                 offset: '100px',
+    //                 area: ['90%', '80%'],
+    //                 content: $('#tab-content')
+    //             });
+    //             $.ajax({
+    //                 type: "get",
+    //                 url: "/chat/getAllOnlineUsers",
+    //                 async: false,
+    //                 success: function (response) {
+    //                     console.log(response);
+    //                     var content = '';
+    //                     if (response && response.success && response.data && response.data.length > 0) {
+    //                         var onlineUsers = response.data;
+    //                         var count = "(" + response.data.length + ")";
+    //                         $('#online-count').html(count);
+    //
+    //                         for (var i = 0; i < onlineUsers.length; i++) {
+    //                             var htm = "<li class=\"layui-tab-card\"><div class=\"contract\"><img src=\"\"  class=\"layui-nav-img\">\n" +
+    //                                 "                                        <canvas id=" + onlineUsers[i].name + " style=\"display:none\"></canvas>" + onlineUsers[i].name + "</div>\n" +
+    //                                 "                                </li>";
+    //                             content += htm;
+    //                             $("#online-users").html(content);
+    //
+    //                         }
+    //                     } else {
+    //
+    //                     }
+    //
+    //                 }
+    //
+    //             })
+    //             $(".layui-collapse").height($(".layui-layer").offsetHeight - $(".layui-layer").offsetTop)
+    //         }
+    //         , connect: function () {
+    //             layer.prompt({title: "输入名字，并确认"}, function (val, index) {
+    //                 if (val) {
+    //                     connect(val.trim());
+    //                     currentName = val.trim();
+    //                     active.chat(val.trim())
+    //                 }
+    //                 layer.close(index);
+    //             });
+    //         }
+    //     };
+    //
+    //
+    // });
+
+    //将消息显示在网页上
+    function setMessageInnerHTML(content) {
+        console.log(content)
+        var html;
+        var to = $('#single-chat').prev()[0].innerText;
+        console.log(to);
+        if (content.from.trim() == to.trim()) {
+            html = "<li class=\"layim-chat-li layim-chat-mine\"><div class=\"layim-chat-user\"><img src=\" \" class=\"layui-nav-img\"><canvas id=\"headImg\" style=\"display:none\"></canvas><cite>" + content.from + "</cite></div><div class=\"layim-chat-text\">" + content.content + "</div></li>";
+        } else {
+            html = "<li class=\"layim-chat-li\">\n" +
+                "                    <div class=\"layim-chat-user\"><img\n" +
+                "                            src=\" \" class=\"layui-nav-img\"><cite> <canvas id=\"headImg\" style=\"display:none\"></canvas>" + content.from + "</cite>\n" +
+                "                    </div>\n" +
+                "                    <div class=\"layim-chat-text\">" + content.content + "</div>\n" +
+                "                </li>";
+        }
+        $(".dialogs").append(html);
+        //让要把新收到的消息把原来的消息往上顶，因此要设置滚动条总是在最下面，因此要用到scrollTop
+        var message = document.getElementById('message-content');
+        message.scrollTop = message.scrollHeight;
+    }
+
+    $(document.body).pullToRefresh(function () {
+// 下拉刷新触发时执行的操作放这里。
+// 从 v1.1.2 版本才支持回调函数，之前的版本只能通过事件监听
+    });
+    $(document).ready(function () {
+$('#chat-friend').html(decodeURI(getUrlParam("to")))
+
+        //     className:'layui-layer layui-layer-page layui-layer-prompt',
+        //     title: [
+        //         '输入名字,并确认',
+        //         'background-color:#1E9FFF; color:#fff;'
+        //     ]
+        //     ,anim: 'up'
+        //     ,content: '<div id="" class="layui-layer-content"><input type="text" class="layui-layer-input" value=""></div>'
+        //     ,btn: ['确认', '取消'],
+        //     yes: function(index){
+        //
+        //         layer.close(index)
+        //     },
+        //    no: function(index){
+        //         layer.close(index)
+        //     },
+        // });
+
+
+        $("body").on('click', '.chat', function () {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+        $("body").on('click', '.contract', function () {
+            //iframe层-禁滚动条
+            layer.open({
+                title: $(this)[0].innerText,
+                type: 1,
+                anim: 3,
+                id: 'single-chat',
+                scrollbar: false,
+                area: ['90%', '80%'],
+                skin: 'layui-layer-lan', //加上边框
+                content: $("#chat-layer"),
+
+            });
+            $("#message-content").height(($(".layui-body").height() - $(".layui-layer-title").height() - $(".layui-footer")[0].offsetHeight) + 10);
+        });
+        $("body").on("click", "#send,#send-btn", function () {
+            var to = $('#single-chat').prev()[0].innerText;
+            console.log(to);
+            send(to);
+        });
+        $("body").on("click", ".chat-close", function () {
+            close();
+        });
+        $("body").on('input porpertychange', ".layui-input", function () {
+            var isSend = $("#send-btn").hasClass("layui-disabled");
+            console.log($(this).val());
+            if ($(this).val()) {
+                if (isSend) {
+                    $("#send-btn").removeClass("layui-disabled")
+                }
+
+
+            } else {
+                $("#send-btn").addClass("layui-disabled")
+            }
+
+        });
+        //回车登录
+        $("body").on('keyup', function (event) {
+
+            if (event.keyCode == '13') {
+                send();
+            }
+        });
+
+
+    })
+    // layer.ready(function () {
+    //     active.connect();
+    // });
+    //通知
+    function notice(title, content) {
+        $.noti({
+            title: title,
+            text: content,
+            media: "<img src='/assets/jquery-weui/dist/demos/images/icon_nav_msg.png'/>",
+            // data: {
+            //     message: "逗你玩的!"
+            // },
+            time: 2000,
+            // onClick: function(data) {
+            //     $.alert(data.message);
+            // }
+        });
+
+    }
+
+    //prompt
+    function prompt() {
+        var cookieName = setcookie('currentUser');
+        if (cookieName) {
+
+            getOnlineUsers();
+            currentName = cookieName;
+        } else {
+            $.prompt({
+                title: '输入名字,点击确定',
+                input: '',
+                empty: false, // 是否允许为空
+                onOK: function (input) {
+                    if (input) {
+                        console.log(input)
+                        if (input) {
+                            connect(input.trim());
+                            currentName = input.trim();
+                            setcookie('currentUser', input.trim(), 7);
+                            // $('#myHead').attr('src',textToImg(input.trim(),'head-me'));
+                        }
+                    }
+                    // else {
+                    //     $.toast("起个名字", "forbidden");
+                    //     prompt();
+                    // }
+
+
+                },
+                onCancel: function () {
+                    //点击取消
+                }
+            });
+        }
+
+
+    }
+
+
+    function textToImg(uname, id,colorIndex) {
+        var name = uname.charAt(0);
+        var fontSize = 60;
+        var fontWeight = '';
+        var canvas = document.getElementById(id);
+        var img1 = document.getElementById(id);
+        canvas.width = 120;
+        canvas.height = 120;
+        var context = canvas.getContext('2d');
+        var colors = ['orange', 'green', 'grey', 'purple', 'yellow', 'blue'];
+        var colorIndex = rand(1, 6);
+        context.fillStyle = colors[colorIndex - 1];
+        context.fillRect(0, 0, canvas.width, canvas.height);
+        context.fillStyle = 'black';
+        context.font = fontWeight + ' ' + fontSize + 'px sans-serif';
+        context.textAlign = 'center';
+        context.textBaseline = "middle";
+        context.fillText(name, fontSize, fontSize);
+        return canvas.toDataURL("image/png");
+    };
+
+    //格式化日期,
+    function formatDate(date, format) {
+        var paddNum = function (num) {
+            num += "";
+            return num.replace(/^(\d)$/, "0$1");
+        }
+        //指定格式字符
+        var cfg = {
+            yyyy: date.getFullYear() //年 : 4位
+            , yy: date.getFullYear().toString().substring(2)//年 : 2位
+            , M: date.getMonth() + 1  //月 : 如果1位的时候不补0
+            , MM: paddNum(date.getMonth() + 1) //月 : 如果1位的时候补0
+            , d: date.getDate()   //日 : 如果1位的时候不补0
+            , dd: paddNum(date.getDate())//日 : 如果1位的时候补0
+            , hh: paddNum(date.getHours())  //时
+            , mm: paddNum(date.getMinutes()) //分
+            , ss: paddNum(date.getSeconds()) //秒
+        }
+        format || (format = "yyyy-MM-dd hh:mm:ss");
+        return format.replace(/([a-z])(\1)*/ig, function (m) {
+            return cfg[m];
+        });
+    }
+
+    //获取在线人数
+    function getOnlineUsers() {
+        $.ajax({
+            type: "get",
+            url: "/chat/getAllOnlineUsers",
+            async: false,
+            success: function (response) {
+                console.log(response);
+                var content = '';
+                if (response && response.success && response.data && response.data.length > 0) {
+                    var onlineUsers = response.data;
+                    var count = response.data.length;
+                    $("#friends-count").html(count);
+                    $("#friends-count").show();
+                    for (var i = 0; i < onlineUsers.length; i++) {
+
+                        var htm = " <a href=\"/blank.shtml\" class=\"weui-media-box weui-media-box_appmsg\">\n" +
+                            "                            <div class=\"weui-media-box__hd\">\n" +
+                            "                                <img class=\"weui-media-box__thumb pulse animated checked\" src=\"\" id=\"list-head-" + i + "\" alt=\"\"><canvas id=\"headImg-" + i + "\" style=\"display:none\"></canvas>\n" +
+                            "                            </div>\n" +
+                            "                            <div class=\"weui-media-box__bd\">\n" +
+                            "                                <h4 class=\"weui-media-box__title\">" + onlineUsers[i].name + "<span class=\"weui-media-box__title-after\">" + onlineUsers[i].loginTime + "</span>\n" +
+                            "                                </h4>\n" +
+                            "                            </div>\n" +
+                            "                        </a>";
+
+
+                        content += htm;
+
+                        $("#friends").html(content);
+
+                        var src = textToImg(onlineUsers[i].name, "headImg-" + i);
+                        $('#' + "list-head-" + i).attr("src", src);
+
+                    }
+
+                } else {
+
+                }
+
+            }
+
+        })
+    }
+
+    function getUrlParam(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]);
+        return null;
+    }
+</script>
+</html>

@@ -7,15 +7,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>wenwen</title>
 
-    <link rel="stylesheet" href="/assets/layer_mobile/need/layer.css">
-    <link rel="stylesheet" href="/assets/layui/src/css/layim.css">
-    <link rel="stylesheet" href="/assets/layui/src/css/layui.css">
-    <link rel="stylesheet" href="/assets/layui/src/css/layui.mobile.css">
+    <!--<link rel="stylesheet" href="/assets/layer_mobile/need/layer.css">-->
+    <!--<link rel="stylesheet" href="/assets/layui/src/css/layim.css">-->
+    <!--<link rel="stylesheet" href="/assets/layui/src/css/layui.css">-->
+    <!--<link rel="stylesheet" href="/assets/layui/src/css/layui.mobile.css">-->
     <!-- head 中 -->
     <link rel="stylesheet" href="/assets/jquery-weui/src/lib/weui.min.css">
     <link rel="stylesheet" href="/assets/jquery-weui/dist/css/jquery-weui.min.css">
-    <link rel="stylesheet" href="/assets/jquery-weui/dist/demos/css/demos.css">
+    <link rel="stylesheet" href="/assets/weui-master/css/weui.css"/>
+    <link rel="stylesheet" href="/assets/weui-master/css/weui2.css"/>
+    <link rel="stylesheet" href="/assets/weui-master/css/weuix.css"/>
+    <link rel="stylesheet" href="/assets/weui-master/css/icon.css"/>
+    <script src="/assets/weui-master/js/zepto.min.js"></script>
+    <script src="/assets/weui-master/js/zepto.weui.js"></script>
+    <script src="/assets/weui-master/js/php.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/2.0.3/jquery.min.js"></script>
+    <script src="/assets/jquery-weui/dist/js/jquery-weui.min.js"></script>
+    <script src="/assets/js/jquery.cookie.js"></script>
+    <script>
+        $(function () {
+            var ani = $("#ani");
+            // $('.weui_btn').click(function(){
 
+            if (ani.hasClass($(this).data('ani'))) {
+                ani.removeClass();
+            } else {
+                ani.addClass($(this).data('ani') + "  animated checked");
+
+            }
+            // })
+
+            $(document.body).pullToRefresh(function () {
+                setTimeout(function () {
+
+                    prompt();
+                    $(document.body).pullToRefreshDone();
+
+                }, 2000);
+            });
+        });
+
+    </script>
 
     <!-- ace settings handler -->
     <style>
@@ -94,25 +126,62 @@
         #message-content::-webkit-scrollbar {
             display: none;
         }
-         .weui-panel {
-             margin: 0;
-         }
+
+        .weui-panel {
+            margin: 0;
+        }
+
         .weui-media-box {
             padding: 8px 15px;
         }
+
         .weui-panel__bd .weui-media-box__hd {
             width: 50px;
             height: 50px;
             line-height: 50px;
             position: relative;
         }
+
         .weui-media-box__desc {
             -webkit-line-clamp: 1;
         }
+
         .weui-media-box__title {
             margin-top: -4px;
         }
 
+        .weui-header .weui-header-title, .weui-header h1 {
+            margin: 0 88px;
+            margin-left: 100px;
+            line-height: 40px;
+            text-align: center;
+            height: 40px;
+            font-size: 18px;
+            font-weight: 400;
+            width: auto;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            color: #fff;
+        }
+
+        .icon {
+            font-family: iconfont !important;
+            font-size: 16px;
+            font-style: normal;
+            -webkit-font-smoothing: antialiased;
+            -webkit-text-stroke-width: .2px;
+        }
+
+        .bg-blue {
+            background-color: #353535 !important;
+        }
+
+        .weui-panel_hd {
+            background-color: #36373C;
+            color: white;
+            height: 50px
+        }
     </style>
 </head>
 <body ontouchstart>
@@ -128,40 +197,56 @@
     <div class="weui-tab__bd">
         <div id="tab1" class="weui-tab__bd-item weui-tab__bd-item--active">
             <div class="page__pd">
+                <!--<div class="weui-panel_hd" style=""><span id="">联系人(10)</span></div>-->
+                <div class="weui-header bg-blue">
+                    <!--<div class="weui-header-left"><a class="icon icon-109 f-white">返回</a></div>-->
+                    <h1 class="weui-header-title">Connect Me!</h1>
+                    <!--<div class="weui-header-right"><a class="icon icon-83 f-white"></a></div>-->
+                </div>
                 <div class="weui-panel weui-panel_access">
-                    <div class="weui-panel__bd">
-                        <a href="/blank.shtml" class="weui-media-box weui-media-box_appmsg">
-                            <div class="weui-media-box__hd">
-                                <img class="weui-media-box__thumb" src="/assets/jquery-weui/demos/images/avatar.jpg" alt="">
-                                <span class="weui-badge" style="position: absolute;top: -.4em;right: -.4em;">8</span>
-                            </div>
-                            <div class="weui-media-box__bd">
-                                <h4 class="weui-media-box__title">
-                                    刘亦菲
-                                    <span class="weui-media-box__title-after">下午8:12</span>
-                                </h4>
-                                <p class="weui-media-box__desc">小李明天早上帮我带两个包子，一个猪肉粉丝和一个奶黄包</p>
-                            </div>
-                        </a>
+                    <canvas id="cans" style="display:none"></canvas>
+                    <div class="weui-panel__bd" id="friends">
+
+                        <!--<a href="/blank.shtml" class="weui-media-box weui-media-box_appmsg">-->
+                        <!--<div class="weui-media-box__hd">-->
+                        <!--<img class="weui-media-box__thumb pulse animated checked" src="/assets/jquery-weui/demos/images/avatar.jpg" alt="">-->
+                        <!--</div>-->
+                        <!--<div class="weui-media-box__bd">-->
+                        <!--<h4 class="weui-media-box__title">-->
+                        <!--刘亦菲-->
+                        <!--<span class="weui-media-box__title-after">下午8:12</span>-->
+                        <!--</h4>-->
+                        <!--</div>-->
+                        <!--</a>-->
                     </div>
+                    <!--<div id="ani" style="width:50px;height:50px;font-size:18px;background:#04b567;opacity:0.5;border-radius:50%;" >-->
                 </div>
             </div>
 
         </div>
         <div id="tab2" class="weui-tab__bd-item">
-            <h1>页面二</h1>
+            <div class="weui-header bg-blue">
+                <div class="weui-header-left"><a class="icon icon-109 f-white"></a></div>
+                <h1 class="weui-header-title">更多</h1>
+                <div class="weui-header-right"><a class="icon icon-83 f-white"></a></div>
+            </div>
         </div>
         <div id="tab3" class="weui-tab__bd-item">
-            <h1>页面三</h1>
-        </div>
-        <div id="tab4" class="weui-tab__bd-item">
-            <h1>页面四</h1>
+            <div class="weui-header bg-blue">
+                <div class="weui-header-left"><a class="icon icon-109 f-white"></a></div>
+                <h1 class="weui-header-title">About Me</h1>
+                <div class="weui-header-right"><a class="icon icon-83 f-white"></a></div>
+            </div>
+            <!--<div class="page-bd-15">-->
+            <!--<a href="javascript:;" class="weui-btn weui-btn_primary" onclick="share()">分享到朋友圈</a>-->
+            <!--</div>-->
         </div>
     </div>
 
     <div class="weui-tabbar">
         <a href="#tab1" class="weui-tabbar__item weui-bar__item--on">
-            <span class="weui-badge" style="position: absolute;top: -.4em;right: 1em;">8</span>
+            <span class="weui-badge" style="position: absolute;top: -.4em;right: 1em;display: none"
+                  id="friends-count"></span>
             <div class="weui-tabbar__icon">
                 <img src="/assets/jquery-weui/dist/demos/images/icon_nav_dialog.png" alt="聊天">
             </div>
@@ -169,13 +254,13 @@
         </a>
         <a href="#tab2" class="weui-tabbar__item">
             <div class="weui-tabbar__icon">
-                <img src="/assets/jquery-weui/dist/demos/images/icon_nav_article.png" alt="发现">
+                <img src="/assets/jquery-weui/dist/demos/images/icon_nav_article.png" alt="更多">
             </div>
-            <p class="weui-tabbar__label">发现</p>
+            <p class="weui-tabbar__label">更多</p>
         </a>
         <a href="#tab3" class="weui-tabbar__item">
             <div class="weui-tabbar__icon">
-                <img src="/assets/jquery-weui/dist/demos/images/icon_nav_cell.png" alt="我">
+                <img src="/assets/weui-master/images/icon_nav_panel.png" alt="我">
             </div>
             <p class="weui-tabbar__label">我</p>
         </a>
@@ -252,27 +337,25 @@
 </div>
 <script src="https://cdn.bootcss.com/stomp.js/2.3.3/stomp.min.js"></script>
 <script src="https://cdn.bootcss.com/sockjs-client/1.1.4/sockjs.min.js"></script>
-<script src="https://cdn.bootcss.com/jquery/2.0.3/jquery.min.js"></script>
-<script src="/assets/jquery-weui/dist/js/jquery-weui.min.js"></script>
+
 <!--[if !IE]> -->
 <script src="/assets/js/jquery-2.1.4.min.js"></script>
 <!-- <![endif]-->
 <script src="/assets/js/bootstrap.min.js"></script>
-<script type="text/javascript">
-    window.jQuery || document.write("<script src='/assets/js/jquery-2.0.3.min.js'>" + "<" + "/script>");
-</script>
-<script type="text/javascript">
-    window.jQuery || document.write("<script src=/'assets/js/jquery-1.10.2.min.js'>" + "<" + "/script>");
-</script>
-<script type="text/javascript">
-    if ("ontouchend" in document) document.write("<script src='/assets/js/jquery.mobile.custom.min.js'>" + "<" + "/script>");
-</script>
+<!--<script type="text/javascript">-->
+<!--window.jQuery || document.write("<script src='/assets/js/jquery-2.0.3.min.js'>" + "<" + "/script>");-->
+<!--</script>-->
+<!--<script type="text/javascript">-->
+<!--window.jQuery || document.write("<script src=/'assets/js/jquery-1.10.2.min.js'>" + "<" + "/script>");-->
+<!--</script>-->
+<!--<script type="text/javascript">-->
+<!--if ("ontouchend" in document) document.write("<script src='/assets/js/jquery.mobile.custom.min.js'>" + "<" + "/script>");-->
+<!--</script>-->
 <!--<script src="/assets/js/layer/layer.js"></script>-->
 
-<script src="/assets/js/ace-elements.min.js"></script>
-<script src="/assets/js/ace.min.js"></script>
+
 <!--<script src="/assets/layui/src/layui.js"></script>-->
-<script src="/assets/layer_mobile/layer.js"></script>
+<!--<script src="/assets/layer_mobile/layer.js"></script>-->
 
 <script src="/assets/jquery-weui/dist/lib/jquery-2.1.4.js"></script>
 <script src="/assets/jquery-weui/dist/lib/fastclick.js"></script>
@@ -284,12 +367,6 @@
 <script src="/assets/jquery-weui/dist/js/jquery-weui.js"></script>
 
 <script>
-    $(document.body).pullToRefresh(function () {
-        setTimeout(function () {
-            $(document.body).pullToRefreshDone();
-            prompt();
-        }, 2000);
-    });
 
 
 </script>
@@ -330,18 +407,24 @@
 
     function sOpen(e) {
         console.log(e)
-        $.toast("连接成功")
-        // layer.msg('连接成功', {icon: 6});
+        var cookieName = setcookie('currentUser');
+        if(!cookieName){
+            $.toast("连接成功");
+        }
+        getOnlineUsers();
     }
 
     function sError(e) {
+        console.log(e)
+
         setMessageInnerHTML("连接发生错误");
     }
 
     function sMessage(event) {
         var obj = JSON.parse(event.data);
         if (obj.extra == "1") {
-            layer.msg(obj.from + "上线", {icon: 6});
+            notice("", obj.name + "上线");
+            getOnlineUsers();
         } else {
             setMessageInnerHTML(obj);
         }
@@ -349,6 +432,7 @@
 
     function sClose(e) {
         setMessageInnerHTML("连接关闭");
+
     }
 
     function send(from, to) {
@@ -376,7 +460,8 @@
 
     //监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
     window.onbeforeunload = function () {
-        close();
+        // sClose();
+        // setcookie('currentUser', null);
     }
     // layui.use('form', function () {
     //     var form = layui.form;
@@ -510,8 +595,8 @@
         prompt();
     });
     $(document).ready(function () {
-        // prompt()
-        // layer.open({
+        prompt()
+
         //     className:'layui-layer layui-layer-page layui-layer-prompt',
         //     title: [
         //         '输入名字,并确认',
@@ -603,44 +688,55 @@
 
     //prompt
     function prompt() {
-        $.prompt({
-            title: '输入名字,点击确定',
-            input: '',
-            empty: false, // 是否允许为空
-            onOK: function (input) {
-                if (input) {
-                    console.log(input)
+        var cookieName = setcookie('currentUser');
+        if (cookieName) {
+            getOnlineUsers();
+            connect(cookieName)
+            currentName = cookieName;
+        } else {
+            $.prompt({
+                title: '输入名字,点击确定',
+                input: '',
+                empty: false, // 是否允许为空
+                onOK: function (input) {
                     if (input) {
-                        connect(input.trim());
-                        currentName = input.trim();
+                        console.log(input)
+                        if (input) {
+                            connect(input.trim());
+                            currentName = input.trim();
+                            setcookie('currentUser', input.trim(), 7);
+                            // $('#myHead').attr('src',textToImg(input.trim(),'head-me'));
+                        }
                     }
+                    // else {
+                    //     $.toast("起个名字", "forbidden");
+                    //     prompt();
+                    // }
+
+
+                },
+                onCancel: function () {
+                    //点击取消
                 }
-                // else {
-                //     $.toast("起个名字", "forbidden");
-                //     prompt();
-                // }
+            });
+        }
 
 
-            },
-            onCancel: function () {
-                //点击取消
-            }
-        });
     }
 
 
-
-    function textToImg(uname, id) {
+    function textToImg(uname, id,imgId) {
         var name = uname.charAt(0);
         var fontSize = 60;
         var fontWeight = '';
-
         var canvas = document.getElementById(id);
         var img1 = document.getElementById(id);
         canvas.width = 120;
         canvas.height = 120;
         var context = canvas.getContext('2d');
-        context.fillStyle = 'orange';
+        var colors = ['orange', 'green', 'grey', 'purple', 'yellow', 'blue'];
+        var colorIndex = rand(1, 6);
+        context.fillStyle = colors[colorIndex - 1];
         context.fillRect(0, 0, canvas.width, canvas.height);
         context.fillStyle = 'black';
         context.font = fontWeight + ' ' + fontSize + 'px sans-serif';
@@ -648,6 +744,7 @@
         context.textBaseline = "middle";
         context.fillText(name, fontSize, fontSize);
         return canvas.toDataURL("image/png");
+        // $("#"+imgId).attr('src', canvas.toDataURL("image/png"));
     };
 
     //格式化日期,
@@ -672,6 +769,58 @@
         return format.replace(/([a-z])(\1)*/ig, function (m) {
             return cfg[m];
         });
+    }
+
+    //获取在线人数
+    function getOnlineUsers() {
+        $.ajax({
+            type: "get",
+            url: "/chat/getAllOnlineUsers",
+            async: false,
+            success: function (response) {
+                console.log(response);
+                var content = '';
+                if (response && response.success && response.data && response.data.length > 0) {
+                    var onlineUsers = response.data;
+                    var count = response.data.length;
+                    $("#friends-count").html(count);
+                    $("#friends-count").show();
+                    for (var i = 0; i < onlineUsers.length; i++) {
+                        var imgClass=['swing','pulse','shake','']
+                        var index=rand(1,4);
+                        var img_class=imgClass[index-1];
+                        var src = textToImg(onlineUsers[i].name, "cans");
+                        var htm = " <a href=\"/weixin.shtml?to="+encodeURI(encodeURI(onlineUsers[i].name))+"\" class=\"weui-media-box weui-media-box_appmsg\">\n" +
+                            "                            <div class=\"weui-media-box__hd\">\n" +
+                            "                                <img class=\"weui-media-box__thumb weui-avatar "+img_class+" animated checked\" src="+src+" id=\"list-head-" + i + "\" alt=\"\">\n" +
+                            "                            </div>\n" +
+                            "                            <div class=\"weui-media-box__bd\">\n" +
+                            "                                <h4 class=\"weui-media-box__title\">" + onlineUsers[i].name + "<span class=\"weui-media-box__title-after\">" + onlineUsers[i].loginTime + "</span>\n" +
+                            "                                </h4>\n" +
+                            "                            </div>\n" +
+                            "                        </a>";
+
+
+                        content += htm;
+
+                        $("#friends").html(content);
+
+
+
+                        // console.log($('.weui-media-box__hd').find('img').eq(i)[0])
+                        // console.log(i)
+                        // $('#' + "list-head-" + i).attr("src", src);
+
+
+                    }
+
+                } else {
+
+                }
+
+            }
+
+        })
     }
 </script>
 </html>

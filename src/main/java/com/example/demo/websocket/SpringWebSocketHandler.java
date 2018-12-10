@@ -24,6 +24,7 @@ import java.util.*;
 public class SpringWebSocketHandler extends TextWebSocketHandler {
     //在线用户列表
     private static final Map<String, WebSocketSession> users;
+    private static final List<OnlineUser> onlineUsers;
 
     //用户标识
     private static final String CLIENT_ID = "name";
@@ -33,6 +34,7 @@ public class SpringWebSocketHandler extends TextWebSocketHandler {
 
     static {
         users = new HashMap<>();
+        onlineUsers = new ArrayList<>();
     }
 
 
@@ -54,6 +56,9 @@ public class SpringWebSocketHandler extends TextWebSocketHandler {
             jsonObject.addProperty("content", "上线成功");
             jsonObject.addProperty("extra", "1");
             sendMessageToAllUsers(new TextMessage(jsonObject.toString()), name);
+            List<OnlineUser> onlineUsers = getAllUsers();
+            Gson gson = new Gson();
+            logger.info("在线人数{},{}", onlineUsers.size(), gson.toJson(onlineUsers));
         }
 
 
@@ -73,6 +78,8 @@ public class SpringWebSocketHandler extends TextWebSocketHandler {
         users.remove(getClientId(session));
         logger.info("连接已关闭：" + closeStatus);
         logger.info("user:{},time-count:{}毫秒,ip:{}", name, time, ip);
+
+
     }
 
     /**
@@ -97,7 +104,8 @@ public class SpringWebSocketHandler extends TextWebSocketHandler {
         if (session.isOpen()) {
             session.close();
         }
-        logger.error("连接出错");
+
+        logger.error("{}连接出错", getClientId(session));
         users.remove(getClientId(session));
     }
 
@@ -154,6 +162,7 @@ public class SpringWebSocketHandler extends TextWebSocketHandler {
      * @return
      */
     public boolean sendMessageToAllUsers(TextMessage message, String currentName) {
+        getAllUsers();
         boolean allSendSuccess = true;
         Set<String> clientIds = users.keySet();
         WebSocketSession session = null;
@@ -176,8 +185,8 @@ public class SpringWebSocketHandler extends TextWebSocketHandler {
      * 获取在线用户
      */
     public List<OnlineUser> getAllUsers() {
-        Gson gson=new Gson();
-        List<OnlineUser> onlineUsers = new ArrayList<>();
+        Gson gson = new Gson();
+
         if (users != null && users.size() > 0) {
             for (String user : users.keySet()) {
                 OnlineUser onlineUser = new OnlineUser();
@@ -185,15 +194,17 @@ public class SpringWebSocketHandler extends TextWebSocketHandler {
                 String ip = (String) users.get(user).getAttributes().get("ip");
                 String loginTime = (String) users.get(user).getAttributes().get("loginTime");
                 onlineUser.setName(name);
-                onlineUser.setLoginTime(loginTime);
                 onlineUser.setIp(ip);
+                onlineUser.setLoginTime(loginTime);
+
                 if (!onlineUsers.contains(onlineUser)) {
+                    onlineUser.setLoginTime(loginTime);
                     onlineUsers.add(onlineUser);
                 }
 
             }
         }
-        logger.info("在线用户{}",gson.toJson(onlineUsers));
+        logger.info("在线人数{},{}", onlineUsers.size(), gson.toJson(onlineUsers));
         return onlineUsers;
     }
 }
